@@ -1,0 +1,359 @@
+[
+  {
+    "slug": "toyota-auris-touring-sports-phase-2",
+    "brand": "Toyota",
+    "model": "Auris",
+    "variant": null,
+    "bodyType": "Break hybride",
+    "yearFrom": 2016,
+    "yearTo": 2018,
+    "motorisation": "Hybride",
+    "category": 1,
+    "image": "/vehicules/toyota-auris-touring-sports-phase-2/1.png",
+    "images": [
+      "/vehicules/toyota-auris-touring-sports-phase-2/1.png",
+      "/vehicules/toyota-auris-touring-sports-phase-2/2.png",
+      "/vehicules/toyota-auris-touring-sports-phase-2/3.png",
+      "/vehicules/toyota-auris-touring-sports-phase-2/4.png",
+      "/vehicules/toyota-auris-touring-sports-phase-2/5.png"
+    ],
+    "description": "Break hybride Toyota reconnu pour sa fiabilité exemplaire et sa motorisation hybride éprouvée. Consommation très basse en ville (autour de 4 L/100 km), coffre spacieux idéal pour les courses VTC avec bagages. Entretien économique et pièces disponibles. Véhicule d'entrée de gamme parfait pour démarrer son activité VTC sans investissement important, compatible avec toutes les plateformes (Uber, Bolt, Heetch).",
+    "tarifJournalier": 37
+  },
+  {
+    "slug": "toyota-c-hr-2018-2024",
+    "brand": "Toyota",
+    "model": "C-HR",
+    "variant": null,
+    "bodyType": "SUV compact hybride",
+    "yearFrom": 2018,
+    "yearTo": 2024,
+    "motorisation": "Hybride",
+    "category": 2,
+    "image": "/vehicules/toyota-c-hr-2018-2024/1.png",
+    "images": [
+      "/vehicules/toyota-c-hr-2018-2024/1.png",
+      "/vehicules/toyota-c-hr-2018-2024/2.png",
+      "/vehicules/toyota-c-hr-2018-2024/3.png",
+      "/vehicules/toyota-c-hr-2018-2024/4.png",
+      "/vehicules/toyota-c-hr-2018-2024/5.png"
+    ],
+    "description": "SUV compact hybride au design distinctif, le Toyota C-HR combine style moderne et efficacité énergétique. Motorisation auto-rechargeable 1.8 L réputée pour sa fiabilité. Consommation mixte autour de 4,5 L/100 km, confort de conduite adapté aux longues journées. Habitacle bien insonorisé et équipements multimédia compatibles Uber/Bolt. Un excellent compromis entre image valorisante et coûts d'exploitation maîtrisés.",
+    "tarifJournalier": 42
+  },
+  {
+    "slug": "toyota-c-hr-2025",
+    "brand": "Toyota",
+    "model": "C-HR",
+    "variant": null,
+    "bodyType": "SUV compact hybride",
+    "yearFrom": 2025,
+    "yearTo": 2025,
+    "motorisation": "Hybride",
+    "category": 3,
+    "image": "/vehicules/toyota-c-hr-2025/1.png",
+    "images": [
+      "/vehicules/toyota-c-hr-2025/1.png",
+      "/vehicules/toyota-c-hr-2025/2.png",
+      "/vehicules/toyota-c-hr-2025/3.png",
+      "/vehicules/toyota-c-hr-2025/4.png",
+      "/vehicules/toyota-c-hr-2025/5.png"
+    ],
+    "description": "Nouvelle génération du Toyota C-HR, hybride de dernière technologie. Design totalement repensé avec des lignes affûtées, intérieur modernisé avec écran tactile central et instrumentation numérique. Consommation optimisée autour de 4 L/100 km grâce à la motorisation hybride 200 ch. Confort premium et technologies d'aide à la conduite avancées, idéal pour les chauffeurs VTC exigeants recherchant une image moderne.",
+    "tarifJournalier": 45
+  },
+  {
+    "slug": "toyota-yaris-cross-2026",
+    "brand": "Toyota",
+    "model": "Yaris Cross",
+    "variant": null,
+    "bodyType": "SUV urbain hybride",
+    "yearFrom": 2026,
+    "yearTo": 2026,
+    "motorisation": "Hybride",
+    "category": 3,
+    "image": "/vehicules/toyota-yaris-cross-2026/1.png",
+    "images": [
+      "/vehicules/toyota-yaris-cross-2026/1.png",
+      "/vehicules/toyota-yaris-cross-2026/2.png",
+      "/vehicules/toyota-yaris-cross-2026/3.png",
+      "/vehicules/toyota-yaris-cross-2026/4.png",
+      "/vehicules/toyota-yaris-cross-2026/5.png"
+    ],
+    "description": "SUV urbain hybride Toyota, agile et sobre. Gabarit compact parfait pour les déplacements parisiens, garde au sol surélevée pour plus de confort et de visibilité. Motorisation hybride à très faible consommation (autour de 4 L/100 km). Équipements de sécurité Toyota Safety Sense de série, écran tactile moderne. Alternative intelligente aux berlines pour une activité VTC efficace en zones denses d'Île-de-France.",
+    "tarifJournalier": 45
+  },
+  {
+    "slug": "toyota-corolla-touring-sport",
+    "brand": "Toyota",
+    "model": "Corolla",
+    "variant": null,
+    "bodyType": "Break hybride",
+    "yearFrom": 2018,
+    "yearTo": 2025,
+    "motorisation": "Hybride",
+    "category": 3,
+    "image": "/vehicules/toyota-corolla-touring-sport/1.png",
+    "images": [
+      "/vehicules/toyota-corolla-touring-sport/1.png",
+      "/vehicules/toyota-corolla-touring-sport/2.png",
+      "/vehicules/toyota-corolla-touring-sport/3.png",
+      "/vehicules/toyota-corolla-touring-sport/4.png",
+      "/vehicules/toyota-corolla-touring-sport/5.png"
+    ],
+    "description": "Break hybride Toyota Corolla, référence pour les chauffeurs VTC recherchant volume de coffre et efficience. Motorisation hybride 1.8 L ou 2.0 L (180 ch) selon version, consommation très basse. Coffre de 596 L idéal pour les courses aéroport. Conduite douce, habitacle insonorisé et équipements multimédia complets. Entretien simple et fiabilité exceptionnelle font de ce modèle un choix économique à long terme.",
+    "tarifJournalier": 45
+  },
+  {
+    "slug": "toyota-bz4x",
+    "brand": "Toyota",
+    "model": "BZ4X",
+    "variant": null,
+    "bodyType": "SUV électrique",
+    "yearFrom": 2025,
+    "yearTo": 2026,
+    "motorisation": "Électrique",
+    "category": 4,
+    "image": "/vehicules/toyota-bz4x/1.png",
+    "images": [
+      "/vehicules/toyota-bz4x/1.png",
+      "/vehicules/toyota-bz4x/2.png",
+      "/vehicules/toyota-bz4x/3.png",
+      "/vehicules/toyota-bz4x/4.png",
+      "/vehicules/toyota-bz4x/5.png"
+    ],
+    "description": "SUV 100 % électrique Toyota, premier modèle zéro émission de la marque. Autonomie WLTP jusqu'à 500 km, puissance de 218 ch et transmission fluide. Recharge rapide en courant continu (150 kW). Habitacle moderne et spacieux, compatible ZFE Paris Crit'Air 0. Idéal pour les courses urbaines et périurbaines en Île-de-France. Coût à l'usage très réduit par rapport à un thermique, un atout majeur pour l'activité VTC.",
+    "tarifJournalier": 47
+  },
+  {
+    "slug": "kia-niro-phase-1",
+    "brand": "Kia",
+    "model": "Niro",
+    "variant": "Phase 1",
+    "bodyType": "SUV compact hybride",
+    "yearFrom": 2016,
+    "yearTo": 2020,
+    "motorisation": "Hybride",
+    "category": 1,
+    "image": "/vehicules/kia-niro-phase-1/1.png",
+    "images": [
+      "/vehicules/kia-niro-phase-1/1.png",
+      "/vehicules/kia-niro-phase-1/2.png",
+      "/vehicules/kia-niro-phase-1/3.png",
+      "/vehicules/kia-niro-phase-1/4.png",
+      "/vehicules/kia-niro-phase-1/5.png"
+    ],
+    "description": "SUV compact hybride Kia, solide et économique. Motorisation hybride 1.6 L de 141 ch avec consommation mixte autour de 4,5 L/100 km. Coffre généreux de 427 L, hauteur de caisse appréciable pour l'embarquement des passagers. Garantie Kia 7 ans à l'origine, réputation de fiabilité et d'entretien peu coûteux. Option d'entrée parfaite pour démarrer ou compléter sa flotte VTC sans se ruiner, compatible toutes plateformes.",
+    "tarifJournalier": 37
+  },
+  {
+    "slug": "kia-niro-phase-2",
+    "brand": "Kia",
+    "model": "Niro",
+    "variant": "Phase 2",
+    "bodyType": "SUV compact hybride",
+    "yearFrom": 2021,
+    "yearTo": 2022,
+    "motorisation": "Hybride",
+    "category": 2,
+    "image": "/vehicules/kia-niro-phase-2/1.png",
+    "images": [
+      "/vehicules/kia-niro-phase-2/1.png",
+      "/vehicules/kia-niro-phase-2/2.png",
+      "/vehicules/kia-niro-phase-2/3.png",
+      "/vehicules/kia-niro-phase-2/4.png",
+      "/vehicules/kia-niro-phase-2/5.png"
+    ],
+    "description": "SUV compact hybride Kia Niro restylé, avec design modernisé et écran tactile plus grand. Motorisation hybride 1.6 L 141 ch inchangée mais logiciel de gestion optimisé. Consommation autour de 4,5 L/100 km, confort de conduite amélioré. Connectivité Apple CarPlay/Android Auto, caméra de recul. Bon compromis entre habitabilité, fiabilité et coût d'exploitation pour les courses VTC quotidiennes en Île-de-France.",
+    "tarifJournalier": 42
+  },
+  {
+    "slug": "kia-niro-phase-3",
+    "brand": "Kia",
+    "model": "Niro",
+    "variant": "Phase 3",
+    "bodyType": "SUV compact hybride",
+    "yearFrom": 2023,
+    "yearTo": 2026,
+    "motorisation": "Hybride",
+    "category": 3,
+    "image": "/vehicules/kia-niro-phase-3/1.png",
+    "images": [
+      "/vehicules/kia-niro-phase-3/1.png",
+      "/vehicules/kia-niro-phase-3/2.png",
+      "/vehicules/kia-niro-phase-3/3.png",
+      "/vehicules/kia-niro-phase-3/4.png",
+      "/vehicules/kia-niro-phase-3/5.png"
+    ],
+    "description": "Troisième génération du Kia Niro, totalement repensée. Design audacieux avec ses montants arrière contrastés, habitacle digital avec double écran 10,25\". Motorisation hybride de dernière génération, consommation optimisée. Grande habitabilité et coffre modulable. Équipements haut de gamme (chargeur à induction, sièges ventilés, conduite semi-autonome). Un SUV hybride moderne et valorisant pour les chauffeurs VTC exigeants.",
+    "tarifJournalier": 45
+  },
+  {
+    "slug": "kia-ev4",
+    "brand": "Kia",
+    "model": "EV4",
+    "variant": null,
+    "bodyType": "Berline électrique",
+    "yearFrom": 2026,
+    "yearTo": 2026,
+    "motorisation": "Électrique",
+    "category": 4,
+    "image": "/vehicules/kia-ev4/1.png",
+    "images": [
+      "/vehicules/kia-ev4/1.png",
+      "/vehicules/kia-ev4/2.png",
+      "/vehicules/kia-ev4/3.png",
+      "/vehicules/kia-ev4/4.png",
+      "/vehicules/kia-ev4/5.png"
+    ],
+    "description": "Berline électrique Kia EV4, dernière génération sur plateforme E-GMP. Autonomie WLTP jusqu'à 630 km, recharge ultra-rapide 350 kW (10 à 80 % en 18 minutes). Design distinctif et habitacle spacieux avec écran panoramique. Compatible ZFE Paris Crit'Air 0, silence de fonctionnement apprécié des passagers. Coût à l'usage très bas grâce à la recharge à domicile ou borne rapide. Une berline électrique premium pour l'activité VTC.",
+    "tarifJournalier": 47
+  },
+  {
+    "slug": "hyundai-ioniq-4-phase-1",
+    "brand": "Hyundai",
+    "model": "Ioniq 4",
+    "variant": "Phase 1",
+    "bodyType": "Berline hybride",
+    "yearFrom": 2017,
+    "yearTo": 2020,
+    "motorisation": "Hybride",
+    "category": 1,
+    "image": "/vehicules/hyundai-ioniq-4-phase-1/1.png",
+    "images": [
+      "/vehicules/hyundai-ioniq-4-phase-1/1.png",
+      "/vehicules/hyundai-ioniq-4-phase-1/2.png",
+      "/vehicules/hyundai-ioniq-4-phase-1/3.png",
+      "/vehicules/hyundai-ioniq-4-phase-1/4.png",
+      "/vehicules/hyundai-ioniq-4-phase-1/5.png"
+    ],
+    "description": "Berline hybride Hyundai Ioniq, référence pour sa consommation record (autour de 3,8 L/100 km en mixte). Design aérodynamique optimisé et habitacle confortable 5 places. Motorisation hybride 1.6 L GDI de 141 ch. Entretien réduit et garantie Hyundai 5 ans à l'origine. Modèle idéal pour les gros rouleurs VTC souhaitant minimiser leurs frais carburant sans compromis sur le confort passagers. Compatible toutes plateformes.",
+    "tarifJournalier": 37
+  },
+  {
+    "slug": "hyundai-ioniq-4-phase-2",
+    "brand": "Hyundai",
+    "model": "Ioniq 4",
+    "variant": "Phase 2",
+    "bodyType": "Berline hybride",
+    "yearFrom": 2022,
+    "yearTo": 2022,
+    "motorisation": "Hybride",
+    "category": 2,
+    "image": "/vehicules/hyundai-ioniq-4-phase-2/1.png",
+    "images": [
+      "/vehicules/hyundai-ioniq-4-phase-2/1.png",
+      "/vehicules/hyundai-ioniq-4-phase-2/2.png",
+      "/vehicules/hyundai-ioniq-4-phase-2/3.png",
+      "/vehicules/hyundai-ioniq-4-phase-2/4.png",
+      "/vehicules/hyundai-ioniq-4-phase-2/5.png"
+    ],
+    "description": "Hyundai Ioniq restylée, conservant sa réputation d'efficience avec une consommation mixte autour de 3,7 L/100 km. Intérieur modernisé avec écran tactile 10,25\" et instrumentation numérique. Équipements de sécurité renforcés (Hyundai SmartSense), connectivité complète. Habitacle silencieux et confortable pour les courses longues distances. Un rapport prestations/coût d'exploitation excellent pour l'activité VTC.",
+    "tarifJournalier": 42
+  },
+  {
+    "slug": "renault-captur",
+    "brand": "Renault",
+    "model": "Captur",
+    "variant": null,
+    "bodyType": "SUV compact hybride",
+    "yearFrom": 2021,
+    "yearTo": 2022,
+    "motorisation": "Hybride",
+    "category": 2,
+    "image": "/vehicules/renault-captur/1.png",
+    "images": [
+      "/vehicules/renault-captur/1.png",
+      "/vehicules/renault-captur/2.png",
+      "/vehicules/renault-captur/3.png",
+      "/vehicules/renault-captur/4.png",
+      "/vehicules/renault-captur/5.png"
+    ],
+    "description": "SUV urbain hybride Renault Captur E-Tech 145 ch, polyvalent et moderne. Consommation mixte autour de 5 L/100 km, idéal pour les trajets urbains et périurbains. Banquette arrière coulissante offrant un volume de coffre ajustable. Équipements multimédia EASY LINK avec écran tactile 9,3\". Design dynamique valorisé auprès des passagers. Un SUV français compact parfait pour l'activité VTC en zones denses d'Île-de-France.",
+    "tarifJournalier": 42
+  },
+  {
+    "slug": "renault-arkana",
+    "brand": "Renault",
+    "model": "Arkana",
+    "variant": null,
+    "bodyType": "SUV coupé hybride",
+    "yearFrom": 2021,
+    "yearTo": 2021,
+    "motorisation": "Hybride",
+    "category": 2,
+    "image": "/vehicules/renault-arkana/1.png",
+    "images": [
+      "/vehicules/renault-arkana/1.png",
+      "/vehicules/renault-arkana/2.png",
+      "/vehicules/renault-arkana/3.png",
+      "/vehicules/renault-arkana/4.png",
+      "/vehicules/renault-arkana/5.png"
+    ],
+    "description": "SUV coupé hybride Renault Arkana E-Tech 145 ch, au design élégant et dynamique. Motorisation hybride série-parallèle issue de la F1, consommation mixte autour de 4,8 L/100 km. Habitacle spacieux malgré la ligne coupé, équipements connectés complets. Positionnement premium qui valorise l'image du chauffeur VTC. Compromis intéressant entre style, efficience et habitabilité pour les courses en Île-de-France.",
+    "tarifJournalier": 42
+  },
+  {
+    "slug": "mercedes-classe-v-250-xl",
+    "brand": "Mercedes",
+    "model": "Classe V",
+    "variant": "250 XL",
+    "bodyType": "Monospace 7 places",
+    "yearFrom": 2026,
+    "yearTo": 2026,
+    "motorisation": "Diesel",
+    "category": 5,
+    "image": "/vehicules/mercedes-classe-v-250-xl/1.png",
+    "images": [
+      "/vehicules/mercedes-classe-v-250-xl/1.png",
+      "/vehicules/mercedes-classe-v-250-xl/2.png",
+      "/vehicules/mercedes-classe-v-250-xl/3.png",
+      "/vehicules/mercedes-classe-v-250-xl/4.png",
+      "/vehicules/mercedes-classe-v-250-xl/5.png"
+    ],
+    "description": "Monospace premium Mercedes Classe V 250d en version longue (XL), configuration 7 places idéale pour les transferts groupes et familiaux. Motorisation diesel 2.0 L 190 ch, consommation mixte autour de 7 L/100 km malgré le gabarit. Habitacle luxueux avec sellerie cuir, éclairage d'ambiance et système MBUX. Boîte automatique 9G-TRONIC. Référence du VTC haut de gamme pour les courses aéroport et transports premium.",
+    "tarifJournalier": null
+  },
+  {
+    "slug": "tesla-model-y",
+    "brand": "Tesla",
+    "model": "Model Y",
+    "variant": null,
+    "bodyType": "SUV électrique",
+    "yearFrom": 2024,
+    "yearTo": 2024,
+    "motorisation": "Électrique",
+    "category": 4,
+    "image": "/vehicules/tesla-model-y/1.png",
+    "images": [
+      "/vehicules/tesla-model-y/1.png",
+      "/vehicules/tesla-model-y/2.png",
+      "/vehicules/tesla-model-y/3.png",
+      "/vehicules/tesla-model-y/4.png",
+      "/vehicules/tesla-model-y/5.png"
+    ],
+    "description": "SUV électrique Tesla Model Y, l'un des véhicules les plus vendus au monde. Autonomie WLTP jusqu'à 533 km (version Grande Autonomie), accélérations fulgurantes, accès au réseau Superchargeurs Tesla. Habitacle épuré avec écran central 15\" et fonctionnalités de conduite semi-autonome. Grande habitabilité et coffre exceptionnel (854 L). Image moderne et premium pour les chauffeurs VTC, coûts d'utilisation réduits.",
+    "tarifJournalier": 47
+  },
+  {
+    "slug": "tesla-model-3",
+    "brand": "Tesla",
+    "model": "Model 3",
+    "variant": null,
+    "bodyType": "Berline électrique",
+    "yearFrom": 2024,
+    "yearTo": 2024,
+    "motorisation": "Électrique",
+    "category": 4,
+    "image": "/vehicules/tesla-model-3/1.png",
+    "images": [
+      "/vehicules/tesla-model-3/1.png",
+      "/vehicules/tesla-model-3/2.png",
+      "/vehicules/tesla-model-3/3.png",
+      "/vehicules/tesla-model-3/4.png",
+      "/vehicules/tesla-model-3/5.png"
+    ],
+    "description": "Berline électrique Tesla Model 3, référence du segment. Autonomie WLTP jusqu'à 629 km selon version, accélérations sportives (0-100 en 6,1 s à 3,3 s). Recharge Supercharger exclusive à Tesla très rapide. Intérieur minimaliste avec écran 15,4\" pilotant toutes les fonctions. Compatible ZFE, silencieuse et confortable pour les passagers. Valeur sûre pour une activité VTC moderne et écologique en Île-de-France.",
+    "tarifJournalier": 47
+  }
+]
