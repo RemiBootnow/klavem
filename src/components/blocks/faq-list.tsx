@@ -24,10 +24,9 @@ function FaqList({ items, className, ...props }: FaqListProps) {
       {items.map((item, i) => {
         const isOpen = openIndex === i;
         return (
-          <div key={i} className="rounded-[20px] bg-muted px-6">
-
+          <div key={i} className="rounded-[20px] bg-muted px-6 py-2">
             <button
-              className="flex w-full cursor-pointer items-center justify-between gap-4 py-4 text-left text-sm font-medium"
+              className="flex w-full cursor-pointer items-center justify-between gap-4 py-4 text-left text-lg font-medium"
               onClick={() => setOpenIndex(isOpen ? null : i)}
               aria-expanded={isOpen}
             >

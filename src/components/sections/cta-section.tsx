@@ -1,9 +1,10 @@
 import { Container } from "@/components/components/container";
 import { ContentBlock } from "@/components/blocks/content-block";
+import { buttonVariants } from "@/components/components/ui/button-variants";
 
 function CtaSection() {
   return (
-    <section data-slot="cta-section" data-theme="dark" className="relative overflow-hidden pt-0 pb-24 lg:pt-[640px] lg:pb-[120px] text-white"
+    <section data-slot="cta-section" data-theme="dark" className="relative overflow-hidden pt-0 pb-24 lg:pt-[calc(12.5vw+160px)] lg:pb-30 text-white"
       style={{
         background:
           "linear-gradient(0deg, #0F0821 0%, #071261 18.27%, #0B1A86 33.65%, #0025C5 53.85%, #008DDE 71.63%, #82CBF5 86.54%, #FFF 100%)",
@@ -15,8 +16,12 @@ function CtaSection() {
           centered
           headline="Prêt à démarrer ?"
           paragraph="Votre véhicule VTC vous attend à Rueil-Malmaison. Contactez-nous et roulez en moins de 48h."
-          actions={[{ label: "Je réserve mon véhicule", href: "/contact" }]}
         />
+        <div className="mt-12 flex justify-center">
+          <a href="/contact" className={buttonVariants()}>
+            Je réserve mon véhicule
+          </a>
+        </div>
       </Container>
     </section>
   );

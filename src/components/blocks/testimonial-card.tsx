@@ -38,12 +38,7 @@ function TestimonialCard({
               className="absolute inset-0 size-full object-cover -z-10"
             />
           )}
-          <div className="absolute inset-0 -z-10 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
-          <img
-            src="/testimonials/Gradient.png"
-            alt=""
-            className="absolute bottom-0 left-0 -z-10 w-full"
-          />
+          <div className="absolute inset-0 -z-10 bg-black/30" />
           <p className="flex-1 text-2xl leading-tight font-semibold text-white">
             &ldquo;{testimonial.quote}&rdquo;
           </p>

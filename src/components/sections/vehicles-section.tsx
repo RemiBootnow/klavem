@@ -25,7 +25,7 @@ function VehiclesSection() {
           <div className="flex justify-center">
             <a
               href="/vehicules"
-              className={buttonVariants({ variant: "outline" })}
+              className={buttonVariants({ variant: "secondary" })}
             >
               Voir tous les véhicules
             </a>

@@ -1,11 +1,9 @@
 import { cn } from "@/lib/utils";
 import { Headline } from "@/components/components/headline";
-import { buttonVariants } from "@/components/components/ui/button-variants";
 
 interface Offer {
   title: string;
   description: string;
-  href: string;
 }
 
 interface OfferCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -31,12 +29,6 @@ function OfferCard({ offers, className, ...props }: OfferCardProps) {
           <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
             {offer.description}
           </p>
-          <a
-            href={offer.href}
-            className={buttonVariants({ variant: "outline" })}
-          >
-            En savoir plus
-          </a>
         </div>
       ))}
     </div>

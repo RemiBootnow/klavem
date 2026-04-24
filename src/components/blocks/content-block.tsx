@@ -45,7 +45,8 @@ function ContentBlock({
       <Headline level={headlineLevel}>{headline}</Headline>
       {paragraph && (
         <p className={cn(
-          "max-w-150 leading-relaxed text-muted-foreground on-dark:text-white on-dark:font-medium",
+          "leading-relaxed text-muted-foreground on-dark:text-white on-dark:font-medium",
+          centered && "max-w-150",
           headlineLevel === 1 ? "text-lg" : "text-base"
         )}>
           {paragraph}

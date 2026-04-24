@@ -14,13 +14,13 @@ function HeroSection() {
         className="object-cover -z-10"
       />
       <div
-        className="absolute inset-0 -z-10"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-50 -z-10"
         style={{
           background:
-            "linear-gradient(180deg, rgba(21, 11, 45, 0.00) 0%, rgba(21, 11, 45, 0.00) 35%, rgba(21, 11, 45, 0.90) 75%, #0F0821 100%)",
+            "linear-gradient(180deg, rgba(21, 11, 45, 0.00) 0%, rgba(21, 11, 45, 0.90) 60%, #0F0821 100%)",
         }}
       />
-      <div className="pt-[calc(4rem+32px)]">
+      <div className="pt-34">
         <Container size="sm">
           <ContentBlock
             centered
@@ -28,7 +28,7 @@ function HeroSection() {
             headline="Louez votre véhicule VTC en Île-de-France"
             paragraph="Hybrides et électriques, tout inclus : assurance, entretien et 7 000 km/mois. Véhicule disponible en 48h."
             actions={[
-              { label: "Je réserve mon véhicule", href: "/contact", size: "xl" as const },
+              { label: "Voir les véhicules", href: "/vehicules", size: "xl" as const },
             ]}
           />
         </Container>

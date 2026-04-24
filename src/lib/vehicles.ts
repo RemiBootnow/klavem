@@ -25,9 +25,7 @@ export function getVehicleBySlug(slug: string): Vehicle | undefined {
 }
 
 export function getRelatedVehicles(vehicle: Vehicle, max = 3): Vehicle[] {
-  return vehicles
-    .filter((v) => v.brand === vehicle.brand && v.slug !== vehicle.slug)
-    .slice(0, max);
+  return vehicles.filter((v) => v.slug !== vehicle.slug).slice(0, max);
 }
 
 export function formatYears(v: Vehicle): string {
@@ -40,8 +38,12 @@ export function formatName(v: Vehicle): string {
     : `${v.brand} ${v.model}`;
 }
 
-export const BRANDS: string[] = [
-  ...new Set(vehicles.map((v) => v.brand)),
+export function getBodyCategory(v: Vehicle): string {
+  return v.bodyType.split(" ")[0];
+}
+
+export const BODY_CATEGORIES: string[] = [
+  ...new Set(vehicles.map(getBodyCategory)),
 ].sort();
 
 export const MOTORISATIONS: Motorisation[] = [

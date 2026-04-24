@@ -15,7 +15,7 @@ function StepsSection() {
           }}
         >
           <StepsBackgroundShape />
-          <div className="relative grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-24">
+          <div className="relative z-10 grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-24">
             <ContentBlock headline="Tout est inclus." />
             <StepList
               steps={[
@@ -53,7 +53,6 @@ function StepsBackgroundShape() {
       xmlns="http://www.w3.org/2000/svg"
       className="pointer-events-none absolute bottom-0 left-0"
       aria-hidden="true"
-      style={{ overflow: "visible" }}
     >
       <path
         d="M-199.579 31.5186C2.02835 -24.4908 181.312 -3.06169 322.449 82.9714C462.73 168.483 554.534 311.247 594.923 477.759L422.911 519.482C391.404 389.589 323.247 290.751 230.321 234.106C138.25 177.982 11.0786 156.698 -152.201 202.06L-199.579 31.5186Z"

@@ -1,33 +1,35 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  Calendar,
-  CheckCircle,
-  GasPump,
-  Leaf,
+  CalendarX,
   Lightning,
-  Medal,
-  WhatsappLogo,
+  MapPin,
+  ShieldCheck,
+  Wrench,
 } from "@phosphor-icons/react/dist/ssr";
 import { Container } from "@/components/components/container";
 import { Headline } from "@/components/components/headline";
-import { Headliner } from "@/components/components/headliner";
 import { ContentBlock } from "@/components/blocks/content-block";
 import { VehicleCard } from "@/components/blocks/vehicle-card";
 import { VehicleGallery } from "@/components/blocks/vehicle-gallery";
 import { Header } from "@/components/blocks/header";
 import { Footer } from "@/components/blocks/footer";
 import { CtaSection } from "@/components/sections/cta-section";
+import { FaqSection } from "@/components/sections/faq-section";
 import { buttonVariants } from "@/components/components/ui/button-variants";
+import { cn } from "@/lib/utils";
 import {
   formatName,
   formatYears,
+  getBodyCategory,
   getRelatedVehicles,
   getVehicleBySlug,
   vehicles,
   type Motorisation,
+  type Vehicle,
 } from "@/lib/vehicles";
+import { ExpandableText } from "./expandable-text";
+import { PriceToggle } from "./price-toggle";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -51,18 +53,24 @@ export async function generateMetadata({
   };
 }
 
-const MOTORISATION_ICON: Record<Motorisation, typeof Lightning> = {
-  Électrique: Lightning,
-  Hybride: Leaf,
-  Diesel: GasPump,
+const INCLUSIONS = [
+  { icon: MapPin, label: "7 000 km inclus" },
+  { icon: ShieldCheck, label: "Assurance tous risques VTC incluse" },
+  { icon: Wrench, label: "Entretien et pneus pris en charge" },
+  { icon: Lightning, label: "Véhicule prêt en 48h" },
+  { icon: CalendarX, label: "Résiliation en 15 jours" },
+];
+
+const FUEL_BY_MOTORISATION: Partial<Record<Motorisation, string>> = {
+  Hybride: "Essence",
 };
 
-const INCLUSIONS = [
-  "Entretien constructeur",
-  "Assurance omnium",
-  "Assistance 24/7",
-  "Pneus été & hiver",
-];
+function getSubtitle(v: Vehicle): string {
+  const parts = [getBodyCategory(v), v.motorisation];
+  const fuel = FUEL_BY_MOTORISATION[v.motorisation];
+  if (fuel) parts.push(fuel);
+  return parts.join(" ");
+}
 
 export default async function VehiclePage({ params }: PageProps) {
   const { slug } = await params;
@@ -71,140 +79,114 @@ export default async function VehiclePage({ params }: PageProps) {
 
   const name = formatName(vehicle);
   const years = formatYears(vehicle);
+  const subtitle = getSubtitle(vehicle);
   const related = getRelatedVehicles(vehicle, 3);
-  const MotoIcon = MOTORISATION_ICON[vehicle.motorisation];
+
+  const specRows = [
+    { label: "Type de véhicule", value: getBodyCategory(vehicle) },
+    { label: "Motorisation", value: vehicle.motorisation },
+    { label: "Année", value: years },
+    { label: "Catégorie", value: String(vehicle.category) },
+  ];
 
   return (
     <>
       <Header variant="light" />
       <main>
-        <section className="pt-32 pb-12">
-          <div className="mx-auto w-full px-6">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:items-start">
-              <div className="flex flex-col gap-6 lg:col-span-2">
-                <VehicleGallery images={vehicle.images} alt={name} />
+        <section className="min-h-screen pt-32 pb-12">
+          <Container>
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_400px] lg:items-start">
+              <VehicleGallery images={vehicle.images} alt={name} />
 
-                <dl className="grid grid-cols-1 gap-4 rounded-2xl border border-border bg-background p-5 sm:grid-cols-3">
-                  <SpecHighlight
-                    icon={<MotoIcon size={22} weight="duotone" />}
-                    label="Motorisation"
-                    value={vehicle.motorisation}
-                  />
-                  <SpecHighlight
-                    icon={<Calendar size={22} weight="duotone" />}
-                    label="Années"
-                    value={years}
-                  />
-                  <SpecHighlight
-                    icon={<Medal size={22} weight="duotone" />}
-                    label="Catégorie"
-                    value={`Catégorie ${vehicle.category}`}
-                  />
-                </dl>
-              </div>
-
-              <aside className="flex flex-col gap-5 lg:sticky lg:top-24">
-                <div className="flex flex-col gap-5 rounded-2xl border border-border bg-background p-6">
-                  <div className="flex flex-col gap-1">
-                    <Headliner>{vehicle.brand}</Headliner>
-                    <Headline
-                      level={1}
-                      className="text-2xl font-bold tracking-tight lg:text-2xl lg:leading-tight"
-                    >
-                      {name}
-                    </Headline>
-                    <p className="text-sm text-muted-foreground">
-                      {vehicle.bodyType} · {years}
-                    </p>
-                  </div>
-
-                  <dl className="flex flex-col divide-y divide-border text-sm">
-                    <InfoRow label="Carrosserie" value={vehicle.bodyType} />
-                    <InfoRow label="Motorisation" value={vehicle.motorisation} />
-                    <InfoRow label="Années" value={years} />
-                    <InfoRow
-                      label="Catégorie"
-                      value={`Catégorie ${vehicle.category}`}
-                    />
-                  </dl>
-
-                  {vehicle.description && (
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      {vehicle.description}
-                    </p>
-                  )}
-
-                  <div className="flex flex-col gap-3">
-                    <div className="flex items-baseline justify-between border-t border-border pt-4">
-                      <span className="text-sm text-muted-foreground">
-                        Tarif journalier
-                      </span>
-                      {vehicle.tarifJournalier !== null ? (
-                        <span>
-                          <span className="text-2xl font-bold">
-                            {vehicle.tarifJournalier} €
-                          </span>
-                          <span className="text-sm text-muted-foreground">
-                            {" "}/ jour TTC
-                          </span>
-                        </span>
-                      ) : (
-                        <span className="text-sm font-medium">Sur demande</span>
-                      )}
-                    </div>
-                    <a
-                      href="/contact/"
-                      className={buttonVariants({
-                        variant: "default",
-                        size: "xl",
-                        className: "w-full",
-                      })}
-                    >
-                      Choisir ce véhicule
-                    </a>
-                    <Link
-                      href="/contact/"
-                      className={buttonVariants({
-                        variant: "outline",
-                        className: "w-full",
-                      })}
-                    >
-                      <WhatsappLogo size={18} weight="fill" />
-                      Contacter Klavem
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-6">
-                  <span className="text-sm font-semibold text-foreground">
-                    Inclus dans la location
+              <aside className="flex flex-col gap-6 lg:sticky lg:top-24">
+                <div className="flex flex-col gap-3">
+                  <span className="text-base text-muted-foreground">
+                    {subtitle}
                   </span>
-                  <ul className="flex flex-col gap-2 text-sm text-foreground/80">
-                    {INCLUSIONS.map((item) => (
-                      <li key={item} className="flex items-center gap-2">
-                        <CheckCircle
-                          size={18}
-                          weight="fill"
-                          className="text-primary"
-                        />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                  <Headline
+                    level={1}
+                    className="text-4xl font-bold tracking-tight lg:text-4xl lg:leading-tight"
+                  >
+                    {name}
+                  </Headline>
+                  {vehicle.description && (
+                    <ExpandableText className="text-sm leading-relaxed text-muted-foreground">
+                      {vehicle.description}
+                    </ExpandableText>
+                  )}
                 </div>
+
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <PriceToggle daily={vehicle.tarifJournalier} />
+                    <span className="text-sm text-muted-foreground underline underline-offset-4">
+                      Tout compris
+                    </span>
+                  </div>
+
+                  <a
+                    href="/contact/"
+                    className={buttonVariants({
+                      variant: "default",
+                      size: "xl",
+                      className: "w-full",
+                    })}
+                  >
+                    Être contacté
+                  </a>
+                </div>
+
+                <ul className="flex flex-col gap-4 rounded-2xl border border-border p-6">
+                  {INCLUSIONS.map(({ icon: Icon, label }) => (
+                    <li
+                      key={label}
+                      className="flex items-center gap-3 text-sm text-foreground"
+                    >
+                      <Icon
+                        size={22}
+                        weight="fill"
+                        className="shrink-0 text-primary"
+                      />
+                      {label}
+                    </li>
+                  ))}
+                </ul>
+
+                <dl className="flex flex-col gap-1">
+                  {specRows.map((row, i) => (
+                    <div
+                      key={row.label}
+                      className={cn(
+                        "flex items-center justify-between gap-4 rounded-[8px] px-2 py-1.5 text-sm",
+                        i % 2 === 1 && "bg-muted/60",
+                      )}
+                    >
+                      <dt className="text-muted-foreground">{row.label}</dt>
+                      <dd className="font-medium text-right">{row.value}</dd>
+                    </div>
+                  ))}
+                </dl>
               </aside>
             </div>
-          </div>
+          </Container>
         </section>
 
         {related.length > 0 && (
-          <section className="pb-24">
+          <section className="py-30">
             <Container>
               <div className="flex flex-col gap-10">
-                <ContentBlock
-                  headline={`Autres modèles ${vehicle.brand}`}
-                  paragraph="Comparez les autres véhicules de la même marque dans notre flotte."
-                />
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                  <ContentBlock
+                    headline="Autres modèles"
+                    paragraph="Découvrez d'autres véhicules de notre flotte adaptés au VTC."
+                  />
+                  <a
+                    href="/vehicules/"
+                    className={buttonVariants({ variant: "secondary" })}
+                  >
+                    Voir tous les véhicules
+                  </a>
+                </div>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {related.map((v) => (
                     <VehicleCard key={v.slug} vehicle={v} />
@@ -215,40 +197,11 @@ export default async function VehiclePage({ params }: PageProps) {
           </section>
         )}
 
+        <FaqSection />
+
         <CtaSection />
       </main>
       <Footer />
     </>
-  );
-}
-
-function InfoRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-center justify-between gap-4 py-2.5">
-      <dt className="text-muted-foreground">{label}</dt>
-      <dd className="font-medium text-right">{value}</dd>
-    </div>
-  );
-}
-
-function SpecHighlight({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="flex items-center gap-3">
-      <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-muted text-foreground">
-        {icon}
-      </div>
-      <div className="flex flex-col">
-        <dt className="text-xs text-muted-foreground">{label}</dt>
-        <dd className="text-sm font-semibold">{value}</dd>
-      </div>
-    </div>
   );
 }

@@ -44,26 +44,19 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
 
   if (count === 0) return null;
 
-  const single = count === 1;
-  const double = count === 2;
+  const hasThumbs = count >= 3;
 
   return (
     <>
-      <div
-        className={cn(
-          "grid gap-3",
-          single && "grid-cols-1",
-          double && "grid-cols-2",
-          !single && !double && "grid-cols-3 grid-rows-2",
-        )}
-      >
+      <div className="flex flex-col gap-2">
         <button
           type="button"
           onClick={() => openAt(0)}
           className={cn(
-            "relative overflow-hidden rounded-2xl bg-muted",
-            "aspect-4/3",
-            !single && !double && "col-span-2 row-span-2 aspect-auto",
+            "relative aspect-4/3 cursor-pointer overflow-hidden transition-transform active:scale-[0.98] bg-muted",
+            hasThumbs
+              ? "rounded-t-2xl rounded-b-[4px]"
+              : "rounded-2xl",
           )}
           aria-label={`${alt} — photo 1`}
         >
@@ -74,14 +67,11 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
           />
         </button>
 
-        {count >= 2 && (
+        {count === 2 && (
           <button
             type="button"
             onClick={() => openAt(1)}
-            className={cn(
-              "relative overflow-hidden rounded-2xl bg-muted aspect-4/3",
-              count >= 3 && "aspect-auto",
-            )}
+            className="relative aspect-4/3 cursor-pointer overflow-hidden transition-transform active:scale-[0.98] rounded-2xl bg-muted"
             aria-label={`${alt} — photo 2`}
           >
             <FallbackImage
@@ -92,19 +82,33 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
           </button>
         )}
 
-        {count >= 3 && (
-          <button
-            type="button"
-            onClick={() => openAt(2)}
-            className="relative overflow-hidden rounded-2xl bg-muted"
-            aria-label={`${alt} — photo 3`}
-          >
-            <FallbackImage
-              src={images[2]}
-              alt={alt}
-              className="h-full w-full object-contain"
-            />
-          </button>
+        {hasThumbs && (
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => openAt(1)}
+              className="relative aspect-4/3 cursor-pointer overflow-hidden transition-transform active:scale-[0.98] rounded-t-[4px] rounded-bl-2xl rounded-br-[4px] bg-muted"
+              aria-label={`${alt} — photo 2`}
+            >
+              <FallbackImage
+                src={images[1]}
+                alt={alt}
+                className="h-full w-full object-contain"
+              />
+            </button>
+            <button
+              type="button"
+              onClick={() => openAt(2)}
+              className="relative aspect-4/3 cursor-pointer overflow-hidden transition-transform active:scale-[0.98] rounded-t-[4px] rounded-bl-[4px] rounded-br-2xl bg-muted"
+              aria-label={`${alt} — photo 3`}
+            >
+              <FallbackImage
+                src={images[2]}
+                alt={alt}
+                className="h-full w-full object-contain"
+              />
+            </button>
+          </div>
         )}
       </div>
 
@@ -136,7 +140,9 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
                 prev();
               }}
               aria-label="Photo précédente"
-              className="absolute left-4 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 md:left-8"
+              className={cn(
+                "absolute left-4 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 md:left-8",
+              )}
             >
               <CaretLeft size={22} weight="bold" />
             </button>
@@ -166,7 +172,9 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
                 next();
               }}
               aria-label="Photo suivante"
-              className="absolute right-4 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 md:right-8"
+              className={cn(
+                "absolute right-4 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 md:right-8",
+              )}
             >
               <CaretRight size={22} weight="bold" />
             </button>

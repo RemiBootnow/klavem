@@ -16,14 +16,12 @@ export const metadata: Metadata = {
 export default function VehiculesPage() {
   return (
     <>
-      <Header />
+      <Header variant="light" />
       <main>
         <section className="pt-32 pb-24">
-          <Container>
+          <Container className="max-w-7xl">
             <div className="flex flex-col gap-12">
               <ContentBlock
-                centered
-                headliner="Notre flotte"
                 headline="Tous nos véhicules"
                 paragraph="Hybrides, électriques et diesel, compatibles Uber, Bolt et toutes les plateformes VTC."
               />

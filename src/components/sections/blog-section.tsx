@@ -29,7 +29,7 @@ function BlogSection() {
           <div className="flex justify-center">
             <a
               href="/blog/"
-              className={buttonVariants({ variant: "outline" })}
+              className={buttonVariants({ variant: "secondary" })}
             >
               Voir tous les articles
             </a>
