@@ -4,7 +4,7 @@ import { StepList } from "@/components/blocks/step-list";
 
 function StepsSection() {
   return (
-    <section data-slot="steps-section" className="py-24">
+    <section data-slot="steps-section" className="section-y">
       <Container>
         <div
           data-theme="dark"
@@ -15,7 +15,7 @@ function StepsSection() {
           }}
         >
           <StepsBackgroundShape />
-          <div className="relative z-10 grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-24">
+          <div className="relative z-10 grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-12">
             <ContentBlock headline="Tout est inclus." />
             <StepList
               steps={[

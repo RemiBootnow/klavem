@@ -1,5 +1,6 @@
 "use client";
 
+import { Plus } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
@@ -33,12 +34,12 @@ function FaqList({ items, className, ...props }: FaqListProps) {
               {item.question}
               <span
                 className={cn(
-                  "shrink-0 text-xl leading-none text-primary transition-transform duration-300",
+                  "flex size-5 shrink-0 items-center justify-center text-primary transition-transform duration-300 lg:size-6",
                   isOpen && "rotate-45"
                 )}
                 aria-hidden="true"
               >
-                +
+                <Plus className="size-5 lg:size-6" weight="bold" />
               </span>
             </button>
             <div

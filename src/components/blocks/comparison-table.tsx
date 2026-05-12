@@ -23,11 +23,11 @@ function ComparisonTable({ rows, className, ...props }: ComparisonTableProps) {
     >
       <div className="flex flex-col">
         <div className="h-28" aria-hidden />
-        <div className="rounded-l-2xl bg-muted px-6">
+        <div className="rounded-l-2xl bg-muted px-2">
           {rows.map((row, i) => (
             <div
               key={i}
-              className="flex h-16 items-center justify-center text-center text-sm font-bold text-foreground"
+              className="flex h-16 items-center justify-center px-2 text-center text-[14px] leading-5 font-semibold text-foreground md:text-sm"
             >
               {row.label}
             </div>
@@ -36,19 +36,19 @@ function ComparisonTable({ rows, className, ...props }: ComparisonTableProps) {
       </div>
 
       <div
-        className="overflow-hidden rounded-3xl pb-6 text-white shadow-2xl shadow-primary/20"
+        className="overflow-hidden rounded-[24px] pt-4 pb-6 text-white shadow-2xl shadow-primary/20 md:rounded-3xl md:pt-0"
         style={{
           background:
             "linear-gradient(180deg, #150B2D 0%, #0025C5 36.54%, #58BAF2 100%)",
         }}
       >
         <div className="flex h-28 items-center justify-center">
-          <Logo variant="white" className="text-white" />
+          <Logo variant="white" className="h-6 text-white md:h-8" />
         </div>
         {rows.map((row, i) => (
           <div
             key={i}
-            className="flex h-16 items-center justify-center px-6 text-center text-sm font-medium"
+            className="flex h-16 items-center justify-center px-2 text-center text-[14px] leading-5 font-medium md:text-sm"
           >
             {row.klavem}
           </div>
@@ -56,14 +56,14 @@ function ComparisonTable({ rows, className, ...props }: ComparisonTableProps) {
       </div>
 
       <div className="flex flex-col">
-        <div className="flex h-28 items-center justify-center text-center text-sm font-bold text-foreground">
+        <div className="flex h-28 items-center justify-center text-center text-[14px] leading-5 font-semibold text-foreground md:text-sm">
           La plupart des loueurs
         </div>
-        <div className="rounded-r-2xl bg-muted px-6">
+        <div className="rounded-r-2xl bg-muted px-2">
           {rows.map((row, i) => (
             <div
               key={i}
-              className="flex h-16 items-center justify-center text-center text-sm font-bold text-foreground"
+              className="flex h-16 items-center justify-center px-2 text-center text-[14px] leading-5 font-semibold text-foreground md:text-sm"
             >
               {row.others}
             </div>

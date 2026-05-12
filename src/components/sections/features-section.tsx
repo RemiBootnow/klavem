@@ -16,15 +16,11 @@ function FeaturesSection() {
     <section
       data-slot="features-section"
       data-theme="dark"
-      className="relative overflow-hidden py-24 lg:pt-[120px] lg:pb-[280px] text-white"
-      style={{
-        background:
-          "linear-gradient(180deg, #0F0821 0%, #071261 18.27%, #0B1A86 33.65%, #0025C5 53.85%, #008DDE 71.63%, #82CBF5 86.54%, #FFF 100%)",
-      }}
+      className="relative overflow-hidden bg-[linear-gradient(180deg,#0F0821_0%,#071261_30%,#0B1A86_50%,#0025C5_75%,#008DDE_88%,#82CBF5_95%,#FFF_100%)] py-24 text-white lg:bg-[linear-gradient(180deg,#0F0821_0%,#071261_18.27%,#0B1A86_33.65%,#0025C5_53.85%,#008DDE_71.63%,#82CBF5_86.54%,#FFF_100%)] lg:pb-70 lg:pt-30"
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 bottom-0 mx-auto max-w-[1222px] rounded-t-[32px] border border-white/10" />
       <Container>
-        <div className="flex flex-col items-center gap-16">
+        <div className="flex flex-col items-center gap-8 lg:gap-12">
           <div className="flex flex-col items-center gap-5">
             <Headliner>Pourquoi Klavem</Headliner>
             <Headline

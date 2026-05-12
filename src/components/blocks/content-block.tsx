@@ -14,7 +14,7 @@ interface Action {
 
 interface ContentBlockProps extends React.HTMLAttributes<HTMLDivElement> {
   headliner?: string;
-  headline: string;
+  headline: React.ReactNode;
   headlineLevel?: HeadlineLevel;
   paragraph?: string;
   actions?: [Action] | [Action, Action];

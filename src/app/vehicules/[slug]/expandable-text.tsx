@@ -2,7 +2,6 @@
 
 import { useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/components/ui/button-variants";
 
 interface ExpandableTextProps {
   children: string;
@@ -24,7 +23,7 @@ function ExpandableText({ children, className }: ExpandableTextProps) {
     <div className="flex flex-col gap-1">
       <p
         ref={ref}
-        className={cn(!expanded && "line-clamp-3", className)}
+        className={cn(!expanded && "line-clamp-2", className)}
       >
         {children}
       </p>
@@ -32,11 +31,7 @@ function ExpandableText({ children, className }: ExpandableTextProps) {
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className={buttonVariants({
-            variant: "secondary",
-            size: "sm",
-            className: "cursor-pointer self-start",
-          })}
+          className="cursor-pointer self-start text-sm font-medium text-foreground underline underline-offset-4 hover:no-underline"
         >
           {expanded ? "Afficher moins" : "Afficher plus"}
         </button>

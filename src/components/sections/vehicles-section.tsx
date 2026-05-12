@@ -8,9 +8,9 @@ function VehiclesSection() {
   const featured = vehicles.slice(0, 3);
 
   return (
-    <section data-slot="vehicles-section" className="pt-0 pb-24">
+    <section data-slot="vehicles-section" className="section-y">
       <Container>
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-8 lg:gap-12">
           <ContentBlock
             centered
             headliner="Nos véhicules"

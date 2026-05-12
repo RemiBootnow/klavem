@@ -28,6 +28,7 @@ import {
   type Motorisation,
   type Vehicle,
 } from "@/lib/vehicles";
+import { ContactCta } from "./contact-cta";
 import { ExpandableText } from "./expandable-text";
 import { PriceToggle } from "./price-toggle";
 
@@ -72,6 +73,34 @@ function getSubtitle(v: Vehicle): string {
   return parts.join(" ");
 }
 
+function HeroGradient() {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-x-0 top-0 h-60 -z-10 overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(0deg, #008DDE 10.57%, #0025C5 54.59%, #0B1A86 78.78%, #0F0821 100%)",
+      }}
+    >
+      <div
+        className="absolute left-1/2 -translate-x-1/2 -bottom-44.75 w-1121.5 h-84.5 rounded-[50%]"
+        style={{
+          background: "#58BAF2",
+          filter: "blur(50px)",
+        }}
+      />
+      <div
+        className="absolute left-1/2 -translate-x-1/2 -bottom-23.25 w-1226.5 h-47 rounded-[50%]"
+        style={{
+          background: "#FFFFFF",
+          filter: "blur(37.5px)",
+        }}
+      />
+    </div>
+  );
+}
+
 export default async function VehiclePage({ params }: PageProps) {
   const { slug } = await params;
   const vehicle = getVehicleBySlug(slug);
@@ -91,21 +120,22 @@ export default async function VehiclePage({ params }: PageProps) {
 
   return (
     <>
-      <Header variant="light" />
+      <Header />
       <main>
-        <section className="min-h-screen pt-32 pb-12">
+        <section className="relative min-h-screen pt-24 pb-12 lg:pt-32">
+          <HeroGradient />
           <Container>
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_400px] lg:items-start">
               <VehicleGallery images={vehicle.images} alt={name} />
 
               <aside className="flex flex-col gap-6 lg:sticky lg:top-24">
                 <div className="flex flex-col gap-3">
-                  <span className="text-base text-muted-foreground">
+                  <span className="text-sm text-foreground lg:text-base">
                     {subtitle}
                   </span>
                   <Headline
                     level={1}
-                    className="text-4xl font-bold tracking-tight lg:text-4xl lg:leading-tight"
+                    className="text-3xl font-bold tracking-tight lg:text-4xl lg:leading-tight"
                   >
                     {name}
                   </Headline>
@@ -117,23 +147,9 @@ export default async function VehiclePage({ params }: PageProps) {
                 </div>
 
                 <div className="flex flex-col gap-4">
-                  <div className="flex items-baseline justify-between gap-4">
-                    <PriceToggle daily={vehicle.tarifJournalier} />
-                    <span className="text-sm text-muted-foreground underline underline-offset-4">
-                      Tout compris
-                    </span>
-                  </div>
+                  <PriceToggle daily={vehicle.tarifJournalier} />
 
-                  <a
-                    href="/contact/"
-                    className={buttonVariants({
-                      variant: "default",
-                      size: "xl",
-                      className: "w-full",
-                    })}
-                  >
-                    Être contacté
-                  </a>
+                  <ContactCta vehicleSlug={vehicle.slug} />
                 </div>
 
                 <ul className="flex flex-col gap-4 rounded-2xl border border-border p-6">
@@ -172,7 +188,7 @@ export default async function VehiclePage({ params }: PageProps) {
         </section>
 
         {related.length > 0 && (
-          <section className="py-30">
+          <section className="section-y">
             <Container>
               <div className="flex flex-col gap-10">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -187,9 +203,14 @@ export default async function VehiclePage({ params }: PageProps) {
                     Voir tous les véhicules
                   </a>
                 </div>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto scrollbar-hide px-6 scroll-pl-6 max-[393px]:-mx-4 max-[393px]:px-4 max-[393px]:scroll-pl-4 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 lg:grid-cols-3">
                   {related.map((v) => (
-                    <VehicleCard key={v.slug} vehicle={v} />
+                    <div
+                      key={v.slug}
+                      className="w-90 shrink-0 snap-start sm:w-auto"
+                    >
+                      <VehicleCard vehicle={v} />
+                    </div>
                   ))}
                 </div>
               </div>

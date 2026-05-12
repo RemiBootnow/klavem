@@ -4,10 +4,10 @@ import { OfferCard } from "@/components/blocks/offer-card";
 
 function OffersSection() {
   return (
-    <section data-slot="offers-section" className="py-24">
+    <section data-slot="offers-section" className="section-y">
       <Container>
-        <div className="flex flex-col gap-12">
-          <ContentBlock headline="Des offres adaptées à votre situation" />
+        <div className="flex flex-col gap-8 lg:gap-12">
+          <ContentBlock headline="Une offre adaptée à votre situation" />
           <OfferCard
             offers={[
               {

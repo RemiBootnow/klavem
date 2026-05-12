@@ -22,7 +22,11 @@ function Container({
   return (
     <div
       data-slot="container"
-      className={cn("mx-auto w-full px-6", sizeStyles[size], className)}
+      className={cn(
+        "mx-auto w-full px-6 max-[393px]:px-4",
+        sizeStyles[size],
+        className
+      )}
       {...props}
     >
       {children}

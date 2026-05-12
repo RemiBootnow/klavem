@@ -60,4 +60,36 @@ function Logo({ variant = "default", className, ...props }: LogoProps) {
   );
 }
 
-export { Logo };
+function LogoIcon({ variant = "default", className, ...props }: LogoProps) {
+  return (
+    <svg
+      width="22"
+      height="32"
+      viewBox="0 0 22 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("h-8 w-auto", className)}
+      {...props}
+    >
+      <path
+        d="M20.3418 1.92609C18.9273 7.7822 15.8347 13.3388 10.915 16.6898C16.933 20.0493 19.0891 24.6986 20.7207 30.0013L20.7285 30.0267H14.0576C12.2938 24.5571 7.3753 19.928 0 19.928V13.7806C7.10134 13.7806 11.8745 8.94833 13.9805 1.92609H20.3418Z"
+        fill={variant === "white" ? "currentColor" : "url(#paint0_linear_logo_icon)"}
+      />
+      <defs>
+        <linearGradient
+          id="paint0_linear_logo_icon"
+          x1="3.01927"
+          y1="3.90913"
+          x2="20.5193"
+          y2="30"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#0F41FF" />
+          <stop offset="1" stopColor="#092799" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
+export { Logo, LogoIcon };

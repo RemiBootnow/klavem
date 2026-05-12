@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CaretLeft, CaretRight, X } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { FallbackImage } from "@/components/components/fallback-image";
@@ -42,6 +42,22 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
     };
   }, [isOpen, close, next, prev]);
 
+  const touchStartX = useRef<number | null>(null);
+
+  function handleTouchStart(e: React.TouchEvent) {
+    if (count <= 1) return;
+    touchStartX.current = e.touches[0].clientX;
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(delta) < 40) return;
+    if (delta < 0) next();
+    else prev();
+  }
+
   if (count === 0) return null;
 
   const hasThumbs = count >= 3;
@@ -53,7 +69,7 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
           type="button"
           onClick={() => openAt(0)}
           className={cn(
-            "relative aspect-4/3 cursor-pointer overflow-hidden transition-transform active:scale-[0.98] bg-muted",
+            "relative aspect-4/3 cursor-pointer overflow-hidden transition-transform active:scale-[0.98] bg-black/3",
             hasThumbs
               ? "rounded-t-2xl rounded-b-[4px]"
               : "rounded-2xl",
@@ -141,7 +157,7 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
               }}
               aria-label="Photo précédente"
               className={cn(
-                "absolute left-4 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 md:left-8",
+                "absolute left-4 top-1/2 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 md:inline-flex md:left-8",
               )}
             >
               <CaretLeft size={22} weight="bold" />
@@ -150,6 +166,8 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
 
           <figure
             onClick={(e) => e.stopPropagation()}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
             className="flex max-h-full max-w-5xl flex-col items-center gap-3"
           >
             <div className="flex w-full items-center justify-center rounded-xl bg-muted p-4">
@@ -173,7 +191,7 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
               }}
               aria-label="Photo suivante"
               className={cn(
-                "absolute right-4 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 md:right-8",
+                "absolute right-4 top-1/2 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 md:inline-flex md:right-8",
               )}
             >
               <CaretRight size={22} weight="bold" />

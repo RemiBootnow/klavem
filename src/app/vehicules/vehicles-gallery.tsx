@@ -11,10 +11,18 @@ function VehiclesGallery() {
   const searchParams = useSearchParams();
 
   const selected = useMemo(
-    () => ({
-      type: searchParams.get("type") ?? null,
-      motorisation: searchParams.get("motorisation") ?? null,
-    }),
+    () => {
+      const rawMin = Number(searchParams.get("min"));
+      const rawMax = Number(searchParams.get("max"));
+      return {
+        brand: searchParams.get("brand") ?? null,
+        type: searchParams.get("type") ?? null,
+        motorisation:
+          searchParams.get("motorisation") ?? searchParams.get("moto") ?? null,
+        priceMin: Number.isFinite(rawMin) && rawMin > 0 ? rawMin : null,
+        priceMax: Number.isFinite(rawMax) && rawMax > 0 ? rawMax : null,
+      };
+    },
     [searchParams]
   );
 
@@ -24,9 +32,18 @@ function VehiclesGallery() {
 
   const filtered = useMemo(() => {
     return vehicles.filter((v) => {
+      if (selected.brand && selected.brand !== v.brand) return false;
       if (selected.type && selected.type !== getBodyCategory(v)) return false;
       if (selected.motorisation && selected.motorisation !== v.motorisation)
         return false;
+      if (selected.priceMin !== null || selected.priceMax !== null) {
+        if (v.tarifJournalier === null) return false;
+        const weeklyPrice = v.tarifJournalier * 7;
+        if (selected.priceMin !== null && weeklyPrice < selected.priceMin)
+          return false;
+        if (selected.priceMax !== null && weeklyPrice > selected.priceMax)
+          return false;
+      }
       return true;
     });
   }, [selected]);

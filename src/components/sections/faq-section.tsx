@@ -50,10 +50,10 @@ function FaqJsonLd() {
 
 function FaqSection() {
   return (
-    <section data-slot="faq-section" className="py-24">
+    <section data-slot="faq-section" className="section-y">
       <FaqJsonLd />
       <Container size="md">
-        <div className="flex flex-col items-center gap-12">
+        <div className="flex flex-col items-center gap-8 lg:gap-12">
           <ContentBlock headline="Questions fréquentes" />
           <FaqList items={faqItems} className="w-full max-w-180" />
         </div>

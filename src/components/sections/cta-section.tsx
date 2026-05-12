@@ -4,7 +4,7 @@ import { buttonVariants } from "@/components/components/ui/button-variants";
 
 function CtaSection() {
   return (
-    <section data-slot="cta-section" data-theme="dark" className="relative overflow-hidden pt-0 pb-24 lg:pt-[calc(12.5vw+160px)] lg:pb-30 text-white"
+    <section data-slot="cta-section" data-theme="dark" className="relative overflow-hidden pt-[100px] pb-24 text-white lg:pt-[calc(12.5vw+160px)] lg:pb-30"
       style={{
         background:
           "linear-gradient(0deg, #0F0821 0%, #071261 18.27%, #0B1A86 33.65%, #0025C5 53.85%, #008DDE 71.63%, #82CBF5 86.54%, #FFF 100%)",

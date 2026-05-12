@@ -4,9 +4,9 @@ import { ComparisonTable } from "@/components/blocks/comparison-table";
 
 function ComparisonSection() {
   return (
-    <section data-slot="comparison-section" className="py-24">
+    <section data-slot="comparison-section" className="section-y">
       <Container>
-        <div className="flex flex-col gap-16">
+        <div className="flex flex-col gap-8 lg:gap-12">
           <ContentBlock
             centered
             headliner="Comparaison"

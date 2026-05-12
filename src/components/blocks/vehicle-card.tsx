@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { Headline } from "@/components/components/headline";
@@ -19,24 +19,56 @@ function VehicleCard({ vehicle, className, ...props }: VehicleCardProps) {
   const tarifHebdomadaire =
     vehicle.tarifJournalier !== null ? vehicle.tarifJournalier * 7 : null;
 
+  const prev = () =>
+    setIdx((i) => (i === 0 ? images.length - 1 : i - 1));
+  const next = () =>
+    setIdx((i) => (i === images.length - 1 ? 0 : i + 1));
+
   const stopAndGo = (fn: () => void) => (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     fn();
   };
 
-  const goPrev = stopAndGo(() =>
-    setIdx((i) => (i === 0 ? images.length - 1 : i - 1))
-  );
-  const goNext = stopAndGo(() =>
-    setIdx((i) => (i === images.length - 1 ? 0 : i + 1))
-  );
+  const goPrev = stopAndGo(prev);
+  const goNext = stopAndGo(next);
+
+  const touchStartX = useRef<number | null>(null);
+  const swipedRef = useRef(false);
+
+  function handleTouchStart(e: React.TouchEvent) {
+    if (images.length <= 1) return;
+    touchStartX.current = e.touches[0].clientX;
+    swipedRef.current = false;
+  }
+
+  function handleTouchMove(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const delta = e.touches[0].clientX - touchStartX.current;
+    if (Math.abs(delta) > 10) swipedRef.current = true;
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(delta) < 40) return;
+    if (delta < 0) next();
+    else prev();
+  }
+
+  function handleLinkClick(e: React.MouseEvent) {
+    if (swipedRef.current) {
+      e.preventDefault();
+      swipedRef.current = false;
+    }
+  }
 
   return (
     <div
       data-slot="vehicle-card"
       className={cn(
-        "group relative flex cursor-pointer flex-col gap-4 overflow-hidden rounded-2xl bg-muted transition-transform has-[a:active]:scale-[0.98]",
+        "group relative flex cursor-pointer flex-col gap-4 overflow-hidden rounded-2xl bg-black/5 text-foreground backdrop-blur transition-transform has-[a:active]:scale-[0.98]",
         className
       )}
       {...props}
@@ -44,10 +76,16 @@ function VehicleCard({ vehicle, className, ...props }: VehicleCardProps) {
       <a
         href={href}
         aria-label={name}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onClick={handleLinkClick}
         className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-hidden"
       />
       <div className="flex flex-col gap-2 px-6 pt-8">
-        <Headline level={3}>{name}</Headline>
+        <Headline level={3} className="on-dark:text-foreground">
+          {name}
+        </Headline>
         <span className="text-base text-muted-foreground">
           {vehicle.bodyType} de {formatYears(vehicle)}
         </span>
@@ -109,9 +147,6 @@ function VehicleCard({ vehicle, className, ...props }: VehicleCardProps) {
             </>
           )}
         </div>
-        <span className="text-sm text-muted-foreground underline underline-offset-4">
-          Tout compris
-        </span>
       </div>
     </div>
   );

@@ -46,6 +46,10 @@ export const BODY_CATEGORIES: string[] = [
   ...new Set(vehicles.map(getBodyCategory)),
 ].sort();
 
+export const VEHICLE_BRANDS: string[] = [
+  ...new Set(vehicles.map((v) => v.brand)),
+].sort();
+
 export const MOTORISATIONS: Motorisation[] = [
   ...new Set(vehicles.map((v) => v.motorisation)),
 ].sort() as Motorisation[];
