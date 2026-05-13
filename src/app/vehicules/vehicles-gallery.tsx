@@ -64,7 +64,7 @@ function VehiclesGallery() {
           <button
             type="button"
             onClick={resetFilters}
-            className={buttonVariants({ variant: "outline" })}
+            className={buttonVariants({ variant: "secondary" })}
           >
             Réinitialiser les filtres
           </button>

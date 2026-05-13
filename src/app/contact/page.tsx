@@ -10,7 +10,7 @@ import {
   formatName,
   formatYears,
 } from "@/lib/vehicles";
-import { ContactForm } from "./contact-form";
+import { ContactPageContent } from "./contact-page-content";
 
 export const metadata: Metadata = {
   title: "Contact | Klavem Fleet",
@@ -40,9 +40,9 @@ export default async function ContactPage({
   const initialVehicleSlug = initialVehicle?.slug ?? null;
 
   return (
-    <main className="min-h-screen bg-background">
-      <header className="sticky top-0 z-10 border-b border-border bg-background/90 backdrop-blur">
-        <Container className="max-w-4xl">
+    <main className="min-h-screen bg-muted/40 lg:bg-muted">
+      <header className="sticky top-0 z-10 border-b border-border bg-background/90 backdrop-blur lg:bg-muted lg:backdrop-blur-none">
+        <Container className="max-w-7xl">
           <div className="flex h-16 items-center justify-between gap-4">
             <Link href="/" aria-label="Retour à l'accueil Klavem">
               <Logo />
@@ -55,7 +55,7 @@ export default async function ContactPage({
                   variant: "secondary",
                   size: "lg",
                   className:
-                    "group/call w-42 overflow-hidden bg-muted text-foreground",
+                    "group/call w-42 overflow-hidden bg-muted text-foreground lg:bg-background",
                 })}
               >
                 <Phone size={16} weight="bold" />
@@ -74,14 +74,12 @@ export default async function ContactPage({
       </header>
 
       <section className="py-10 sm:py-14">
-        <Container className="max-w-110">
-          <ContactForm
-            vehicles={formVehicles}
+        <Container className="max-w-110 lg:max-w-7xl">
+          <ContactPageContent
+            formVehicles={formVehicles}
+            vehicles={vehicles}
             initialVehicleSlug={initialVehicleSlug}
           />
-          <p className="mt-6 text-center text-xs text-muted-foreground">
-            Réponse en moins de 2h ouvrées · contact@klavem.fr · 01 89 62 31 22
-          </p>
         </Container>
       </section>
     </main>

@@ -28,7 +28,20 @@ Single `AskUserQuestion` call with multiple questions:
 - **Body type**: offer common values from existing vehicles (`SUV compact hybride`, `Berline électrique`, `Break hybride`, `Monospace 7 places`, `SUV urbain hybride`, `SUV coupé hybride`, `Berline hybride`, `SUV électrique`) plus "Other" for free-text.
 - **Year range**: ask for yearFrom and yearTo separately, or as a single "2024" / "2023-2026" string. Normalize into two integers.
 
-**Question 3 — daily tariff** (`tarifJournalier`, number of euros or null)
+**Question 3 — technical specs** (research, then confirm with user)
+
+The data model requires these fields. Research them yourself from manufacturer specs / well-known sources (you do NOT need to call the user for each one unless you can't find a value):
+
+- **transmission**: `"Automatique"` or `"Manuelle"`. Almost all modern hybrids/electrics are auto — only flag if you find a manual.
+- **consommation** (Hybride/Diesel only): WLTP combined consumption as a French-formatted string, e.g. `"4,5 L/100 km"`. Set to `null` for electric vehicles.
+- **tempsCharge** (Électrique only): DC fast-charge time 10→80 %, e.g. `"30 min (10-80 %)"`. Set to `null` for non-electric.
+- **autonomie**: number of km. WLTP range for electrics (e.g. `533`); set to `null` for hybrid/diesel (we don't surface tank range).
+- **coffre**: number, in litres. Standard "boot volume seats up" figure.
+- **places**: integer — typically 5, occasionally 7 (vans).
+
+Before writing the JSON, list the 6 values back to the user in one short message so they can correct anything you couldn't find or got wrong.
+
+**Question 4 — daily tariff** (`tarifJournalier`, number of euros or null)
 
 After the user chooses a category, derive a default daily tariff from this mapping (from the original PDF) and propose it:
 
@@ -96,6 +109,12 @@ Read `content/vehicles.json`, parse, append a new object with this shape (and wr
   "yearFrom": <int>,
   "yearTo": <int>,
   "motorisation": "<Hybride|Électrique|Diesel>",
+  "transmission": "<Automatique|Manuelle>",
+  "consommation": "<\"X,X L/100 km\" for Hybride/Diesel, null for Électrique>",
+  "tempsCharge": "<\"X min (10-80 %)\" for Électrique, null for Hybride/Diesel>",
+  "autonomie": "<km int for Électrique, null otherwise>",
+  "coffre": <litres int>,
+  "places": <seats int>,
   "category": <1-5>,
   "tarifJournalier": <number or null>,
   "image": "/vehicules/<slug>/1.png",

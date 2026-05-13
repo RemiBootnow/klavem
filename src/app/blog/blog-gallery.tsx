@@ -74,17 +74,17 @@ function BlogGallery({ searchParams }: BlogGalleryProps) {
   return (
     <div className="flex flex-col gap-12">
       <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-        <h1 className="text-5xl font-bold leading-none text-white sm:text-6xl lg:text-[88px]">
+        <h1 className="text-5xl font-bold leading-none text-foreground sm:text-6xl lg:text-[88px]">
           Blog
         </h1>
         <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
           <form
             action="/blog"
-            className="flex h-12 min-w-0 items-center rounded-full border border-white/15 bg-white/5 px-4 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur sm:w-80"
+            className="flex h-12 min-w-0 items-center rounded-full border border-border bg-muted px-4 text-foreground sm:w-80"
             onSubmit={(event) => event.preventDefault()}
           >
             <MagnifyingGlass
-              className="size-5 shrink-0 text-white/50"
+              className="size-5 shrink-0 text-muted-foreground"
               strokeWidth="var(--icon-stroke-size)"
             />
             <input
@@ -93,14 +93,14 @@ function BlogGallery({ searchParams }: BlogGalleryProps) {
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Rechercher..."
-              className="min-w-0 flex-1 bg-transparent px-3 text-sm font-medium text-white outline-none placeholder:text-white/45"
+              className="min-w-0 flex-1 bg-transparent px-3 text-sm font-medium text-foreground outline-none placeholder:text-muted-foreground"
             />
             {query.length > 0 && (
               <button
                 type="button"
                 aria-label="Effacer la recherche"
                 onClick={() => setQuery("")}
-                className="inline-flex size-7 shrink-0 items-center justify-center rounded-full text-white/55 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+                className="inline-flex size-7 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-background hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30"
               >
                 <X
                   className="size-4"
@@ -119,7 +119,7 @@ function BlogGallery({ searchParams }: BlogGalleryProps) {
               aria-expanded={subscribeOpen}
               aria-haspopup="dialog"
               onClick={() => setSubscribeOpen((open) => !open)}
-              className="inline-flex h-12 w-full shrink-0 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/10 px-5 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-colors hover:bg-white/15 sm:w-auto"
+              className="inline-flex h-12 w-full shrink-0 items-center justify-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold text-background transition-colors hover:bg-foreground/85 sm:w-auto"
             >
               <Bell
                 className="size-4"

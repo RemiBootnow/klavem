@@ -16,24 +16,13 @@ export const metadata: Metadata = {
 export default function VehiculesPage() {
   return (
     <>
-      <Header />
+      <Header variant="light" />
       <main>
-        <section
-          data-theme="dark"
-          className="relative overflow-hidden pt-24 pb-24 text-white lg:pt-32"
-        >
-          <HeroGradient />
+        <section className="relative overflow-hidden pt-24 pb-24 lg:pt-32">
+          {/* <HeroGradient /> */}
           <Container className="max-w-7xl">
             <div className="flex flex-col gap-8 lg:gap-12">
-              <ContentBlock
-                headline={
-                  <>
-                    Quelle véhicule
-                    <br />
-                    voulez-vous conduire ?
-                  </>
-                }
-              />
+              <ContentBlock headline="Choisissez votre véhicule" />
               <Suspense fallback={null}>
                 <VehiclesGallery />
               </Suspense>
@@ -51,7 +40,7 @@ function HeroGradient() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[403px] overflow-hidden"
+      className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-100.75 overflow-hidden"
       style={{
         background:
           "linear-gradient(0deg, #008DDE 10.57%, #0025C5 54.59%, #0B1A86 78.78%, #0F0821 100%)",

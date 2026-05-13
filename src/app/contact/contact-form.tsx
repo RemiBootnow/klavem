@@ -10,6 +10,7 @@ import {
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/components/ui/button";
+import { Checkbox } from "@/components/components/ui/checkbox";
 import { FallbackImage } from "@/components/components/fallback-image";
 
 type Location = "idf" | "autre";
@@ -95,6 +96,7 @@ const inputClasses = cn(
 interface ContactFormProps {
   vehicles: VehicleOption[];
   initialVehicleSlug: string | null;
+  onVehicleChange?: (slug: string) => void;
 }
 
 function scoreVehicleSituation(s: VehicleSituation | ""): number {
@@ -122,7 +124,11 @@ function pushDataLayer(payload: Record<string, unknown>) {
   window.dataLayer.push(payload);
 }
 
-function ContactForm({ vehicles, initialVehicleSlug }: ContactFormProps) {
+function ContactForm({
+  vehicles,
+  initialVehicleSlug,
+  onVehicleChange,
+}: ContactFormProps) {
   const [step, setStep] = useState(initialVehicleSlug ? 2 : 1);
   const [submitted, setSubmitted] = useState(false);
   const [mdqlPushed, setMdqlPushed] = useState(false);
@@ -134,6 +140,10 @@ function ContactForm({ vehicles, initialVehicleSlug }: ContactFormProps) {
   const [form, setForm] = useState<FormState>(() =>
     buildInitialState(initialVehicleSlug)
   );
+
+  useEffect(() => {
+    onVehicleChange?.(form.vehicleSlug);
+  }, [form.vehicleSlug, onVehicleChange]);
 
   const selectedVehicle = useMemo(
     () => vehicles.find((v) => v.slug === form.vehicleSlug),
@@ -422,11 +432,10 @@ function ContactForm({ vehicles, initialVehicleSlug }: ContactFormProps) {
                     : "border-border"
                 )}
               >
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={form.consent}
-                  onChange={(e) => update("consent", e.target.checked)}
-                  className="mt-0.5 size-4 accent-primary"
+                  onCheckedChange={(checked) => update("consent", checked)}
+                  className="mt-0.5"
                 />
                 <span className="text-muted-foreground">
                   J&apos;accepte d&apos;être recontacté par Klavem Fleet au sujet
@@ -498,13 +507,13 @@ function ContactForm({ vehicles, initialVehicleSlug }: ContactFormProps) {
         )}
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 flex items-center gap-3 border-t border-border bg-background px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] lg:static lg:mt-8 lg:justify-end lg:px-0 lg:pt-6 lg:pb-0">
+      <div className="fixed inset-x-0 bottom-0 z-30 flex items-center gap-3 border-t border-border bg-background px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] lg:static lg:mt-8 lg:justify-end lg:border-t-0 lg:px-0 lg:pt-0 lg:pb-0">
         {step < 3 ? (
           <Button
             type="button"
             size="xl"
             onClick={next}
-            className="flex-1 lg:flex-none"
+            className="flex-1"
           >
             Continuer
           </Button>
@@ -512,7 +521,7 @@ function ContactForm({ vehicles, initialVehicleSlug }: ContactFormProps) {
           <Button
             type="submit"
             size="xl"
-            className="flex-1 lg:flex-none"
+            className="flex-1"
           >
             Envoyer ma demande
             <PaperPlaneTilt size={18} weight="bold" />
@@ -788,4 +797,4 @@ function labelFor<T extends string>(
   return options.find((o) => o.value === value)?.label ?? "";
 }
 
-export { ContactForm };
+export { ContactForm, UNDECIDED };

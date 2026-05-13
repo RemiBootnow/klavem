@@ -1,6 +1,7 @@
 import data from "../../content/vehicles.json";
 
 export type Motorisation = "Hybride" | "Électrique" | "Diesel";
+export type Transmission = "Automatique" | "Manuelle";
 
 export interface Vehicle {
   slug: string;
@@ -11,6 +12,12 @@ export interface Vehicle {
   yearFrom: number;
   yearTo: number;
   motorisation: Motorisation;
+  transmission: Transmission;
+  consommation: string | null;
+  tempsCharge: string | null;
+  autonomie: number | null;
+  coffre: number;
+  places: number;
   category: number;
   image: string;
   images: string[];

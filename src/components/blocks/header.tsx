@@ -54,11 +54,11 @@ function Header({ variant = "transparent" }: HeaderProps) {
         "fixed top-0 left-0 right-0 z-50",
         !open && "transition-colors duration-300",
         solid
-          ? "bg-background backdrop-blur-md"
+          ? "border-b border-foreground/5 bg-background backdrop-blur-md"
           : "bg-transparent text-white"
       )}
     >
-      <div className="w-full px-5 lg:px-8">
+      <div className="mx-auto w-full max-w-7xl px-6 max-[393px]:px-4">
         <div className="flex items-center gap-3 py-3 lg:items-start lg:gap-4 lg:py-4">
           <div className="flex h-12 flex-1 items-center lg:h-13">
             <Link href="/" className="shrink-0">
@@ -112,16 +112,25 @@ function Header({ variant = "transparent" }: HeaderProps) {
                 </span>
               </span>
             </a>
-            <Button
-              variant="secondary"
-              size="icon-lg"
-              className="hidden lg:inline-flex"
-              onClick={() => setOpen(!open)}
-              aria-label="Menu"
-              aria-expanded={open}
-            >
-              {open ? <X size={20} /> : <List size={20} />}
-            </Button>
+            <div className="hidden lg:relative lg:inline-flex">
+              <Button
+                variant="secondary"
+                size="icon-lg"
+                className="cursor-pointer"
+                onClick={() => setOpen(!open)}
+                aria-label="Menu"
+                aria-expanded={open}
+              >
+                {open ? <X size={20} /> : <List size={20} />}
+              </Button>
+              {open && (
+                <div className="absolute right-0 top-[calc(100%+8px)] w-56 rounded-2xl border bg-background text-foreground shadow-lg">
+                  <div className="w-full px-3">
+                    <HeaderNavLinks onLinkClick={() => setOpen(false)} />
+                  </div>
+                </div>
+              )}
+            </div>
             <Button
               variant="ghost"
               size="icon-lg"
@@ -155,18 +164,10 @@ function Header({ variant = "transparent" }: HeaderProps) {
         </div>
       </div>
 
-      {open && (
-        <div className="absolute right-8 top-[calc(100%+8px)] hidden w-56 rounded-2xl border bg-background text-foreground shadow-lg lg:block">
-          <div className="w-full px-3">
-            <HeaderNavLinks onLinkClick={() => setOpen(false)} />
-          </div>
-        </div>
-      )}
-
-      {searchOpen && (
-        <MobileSearchDialog solid={solid} onClose={() => setSearchOpen(false)} />
-      )}
     </header>
+    {searchOpen && (
+      <MobileSearchDialog solid={solid} onClose={() => setSearchOpen(false)} />
+    )}
     </>
   );
 }
@@ -261,6 +262,37 @@ function HeaderSearchContent({
   const [priceMax, setPriceMax] = useState<number>(initialState.priceMax);
   const [priceDirty, setPriceDirty] = useState(initialState.priceDirty);
   const ref = useRef<HTMLDivElement>(null);
+  const filterRefs = useRef<Partial<Record<FilterKey, HTMLButtonElement>>>({});
+  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
+
+  useEffect(() => {
+    if (!openKey) return;
+    const btn = filterRefs.current[openKey];
+    if (!btn) return;
+    const parent = btn.parentElement;
+    if (!parent) return;
+
+    const update = () => {
+      if (openKey === "type") {
+        setIndicator({ left: 0, width: btn.offsetLeft + btn.offsetWidth });
+        return;
+      }
+      if (openKey === "motorisation") {
+        setIndicator({
+          left: btn.offsetLeft,
+          width: parent.clientWidth - btn.offsetLeft,
+        });
+        return;
+      }
+      setIndicator({ left: btn.offsetLeft, width: btn.offsetWidth });
+    };
+
+    update();
+
+    const observer = new ResizeObserver(update);
+    observer.observe(parent);
+    return () => observer.disconnect();
+  }, [openKey, type, moto, priceDirty, priceMin, priceMax]);
 
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
@@ -270,32 +302,6 @@ function HeaderSearchContent({
     document.addEventListener("mousedown", onDocClick);
     return () => document.removeEventListener("mousedown", onDocClick);
   }, []);
-
-  useEffect(() => {
-    if (pathname !== "/vehicules" && pathname !== "/vehicules/") return;
-
-    const params = new URLSearchParams();
-    if (type) params.set("type", type);
-    if (moto) params.set("motorisation", moto);
-    if (priceDirty) {
-      params.set("min", String(priceMin));
-      params.set("max", String(priceMax));
-    }
-    const next = params.toString();
-    if (next === searchParams.toString()) return;
-    router.replace(next ? `/vehicules?${next}` : "/vehicules", {
-      scroll: false,
-    });
-  }, [
-    type,
-    moto,
-    priceMin,
-    priceMax,
-    priceDirty,
-    pathname,
-    router,
-    searchParams,
-  ]);
 
   function handleSearch() {
     const params = new URLSearchParams();
@@ -399,144 +405,159 @@ function HeaderSearchContent({
   }
 
   return (
-    <div
-      ref={ref}
-      className={cn(
-        "group/search overflow-hidden border transition-[background-color,border-color,box-shadow,color] duration-300",
-        isMobile
-          ? "rounded-2xl border-border bg-background text-foreground shadow-none"
-          : cn(
-              "rounded-[24px]",
-              isOpen
-                ? "border-border bg-background text-foreground shadow-lg"
-                : soft
-                  ? "border-white/5 bg-white/15 text-white shadow-none hover:bg-muted hover:text-foreground"
-                  : "border-transparent bg-muted text-foreground shadow-none"
-            ),
-        className
-      )}
-    >
+    <div ref={ref} className={cn("relative", className)}>
       <div
         className={cn(
-          "flex gap-1 p-1",
-          isMobile ? "flex-col items-stretch" : "items-center"
+          "group/search rounded-[24px] border border-transparent shadow-none transition-[background-color,color] duration-300",
+          isOpen
+            ? "bg-muted text-foreground"
+            : soft
+              ? "bg-white/15 text-white hover:bg-muted hover:text-foreground"
+              : "bg-muted text-foreground"
         )}
       >
-        <FilterButton
-          label="Type de véhicule"
-          value={type}
-          active={openKey === "type"}
-          soft={soft && !isMobile}
-          mobile={isMobile}
-          onClick={() => setOpenKey((k) => (k === "type" ? null : "type"))}
-        />
-        {!isMobile && <Divider soft={soft} />}
-        <FilterButton
-          label="Tarifs"
-          value={priceDirty ? getPriceLabel(priceMin, priceMax) : null}
-          active={openKey === "tarifs"}
-          soft={soft && !isMobile}
-          mobile={isMobile}
-          onClick={() =>
-            setOpenKey((k) => (k === "tarifs" ? null : "tarifs"))
-          }
-        />
-        {!isMobile && <Divider soft={soft} />}
-        <FilterButton
-          label="Motorisation"
-          value={moto}
-          active={openKey === "motorisation"}
-          soft={soft && !isMobile}
-          mobile={isMobile}
-          onClick={() =>
-            setOpenKey((k) => (k === "motorisation" ? null : "motorisation"))
-          }
-        />
-        <button
-          type="button"
-          onClick={handleSearch}
-          aria-label="Rechercher"
-          className={cn(
-            "flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors duration-300",
-            isMobile
-              ? "mt-2 h-12 w-full gap-2 bg-primary px-4 text-primary-foreground hover:bg-primary/80"
-              : soft
+        <div className="relative flex items-center gap-1 p-1">
+          <div
+            aria-hidden
+            className={cn(
+              "pointer-events-none absolute inset-y-0 rounded-full bg-background shadow-md transition-all duration-300",
+              openKey ? "opacity-100" : "opacity-0"
+            )}
+            style={{
+              left: `${indicator.left}px`,
+              width: `${indicator.width}px`,
+            }}
+          />
+          <FilterButton
+            buttonRef={(el) => {
+              filterRefs.current.type = el ?? undefined;
+            }}
+            label="Type de véhicule"
+            value={type}
+            active={openKey === "type"}
+            soft={soft}
+            onClick={() => setOpenKey((k) => (k === "type" ? null : "type"))}
+          />
+          <Divider
+            soft={soft}
+            hidden={openKey === "type" || openKey === "tarifs"}
+          />
+          <FilterButton
+            buttonRef={(el) => {
+              filterRefs.current.tarifs = el ?? undefined;
+            }}
+            label="Tarifs"
+            value={priceDirty ? getPriceLabel(priceMin, priceMax) : null}
+            active={openKey === "tarifs"}
+            soft={soft}
+            onClick={() =>
+              setOpenKey((k) => (k === "tarifs" ? null : "tarifs"))
+            }
+          />
+          <Divider
+            soft={soft}
+            hidden={openKey === "tarifs" || openKey === "motorisation"}
+          />
+          <FilterButton
+            buttonRef={(el) => {
+              filterRefs.current.motorisation = el ?? undefined;
+            }}
+            label="Motorisation"
+            value={moto}
+            active={openKey === "motorisation"}
+            soft={soft}
+            onClick={() =>
+              setOpenKey((k) => (k === "motorisation" ? null : "motorisation"))
+            }
+          />
+          <button
+            type="button"
+            onClick={handleSearch}
+            aria-label="Rechercher"
+            className={cn(
+              "relative z-10 flex h-9 min-w-9 shrink-0 cursor-pointer items-center justify-center rounded-full px-2 transition-all duration-300",
+              isOpen && "gap-2 px-3",
+              soft
                 ? "bg-white text-foreground group-hover/search:bg-primary group-hover/search:text-primary-foreground"
                 : "bg-primary text-primary-foreground hover:bg-primary/80"
-          )}
-        >
-          <MagnifyingGlass size={18} weight="bold" />
-          {isMobile && <span className="text-sm font-semibold">Rechercher</span>}
-        </button>
+            )}
+          >
+            <MagnifyingGlass size={18} weight="bold" className="shrink-0" />
+            <span
+              className={cn(
+                "overflow-hidden whitespace-nowrap text-sm font-medium transition-all duration-300",
+                isOpen ? "max-w-32 opacity-100" : "max-w-0 opacity-0"
+              )}
+            >
+              Rechercher
+            </span>
+          </button>
+        </div>
       </div>
 
       <div
         className={cn(
-          "grid transition-[grid-template-rows] duration-300 ease-out",
-          isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+          "absolute inset-x-0 top-[calc(100%+8px)] z-50 overflow-hidden rounded-2xl border border-border bg-background text-foreground shadow-lg transition-all duration-300",
+          isOpen
+            ? "translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-2 opacity-0"
         )}
         aria-hidden={!isOpen}
       >
-        <div className="overflow-hidden">
-          <div
-            className={cn(
-              "border-t border-border/60 px-3 py-3 transition-opacity duration-200",
-              isOpen ? "opacity-100 delay-100" : "opacity-0"
-            )}
-          >
-            {openKey === "type" && (
-              <OptionList
-                options={BODY_CATEGORIES}
-                selected={type}
-                onSelect={(v) => {
-                  setType(v);
-                  setOpenKey(null);
-                }}
-              />
-            )}
-            {openKey === "tarifs" && (
-              <PriceOptions
-                min={priceMin}
-                max={priceMax}
-                dirty={priceDirty}
-                onSelect={(a, b) => {
-                  setPriceMin(a);
-                  setPriceMax(b);
-                  setPriceDirty(
-                    a !== DEFAULT_PRICE_MIN || b !== DEFAULT_PRICE_MAX
-                  );
-                  setOpenKey(null);
-                }}
-                onClear={() => {
-                  setPriceMin(DEFAULT_PRICE_MIN);
-                  setPriceMax(DEFAULT_PRICE_MAX);
-                  setPriceDirty(false);
-                  setOpenKey(null);
-                }}
-              />
-            )}
-            {openKey === "motorisation" && (
-              <OptionList
-                options={[...MOTORISATIONS]}
-                selected={moto}
-                onSelect={(v) => {
-                  setMoto(v);
-                  setOpenKey(null);
-                }}
-              />
-            )}
-          </div>
+        <div className="px-3 py-3">
+          {openKey === "type" && (
+            <OptionList
+              options={BODY_CATEGORIES}
+              selected={type}
+              onSelect={(v) => {
+                setType(v);
+                setOpenKey(null);
+              }}
+            />
+          )}
+          {openKey === "tarifs" && (
+            <PriceOptions
+              min={priceMin}
+              max={priceMax}
+              dirty={priceDirty}
+              onSelect={(a, b) => {
+                setPriceMin(a);
+                setPriceMax(b);
+                setPriceDirty(
+                  a !== DEFAULT_PRICE_MIN || b !== DEFAULT_PRICE_MAX
+                );
+                setOpenKey(null);
+              }}
+              onClear={() => {
+                setPriceMin(DEFAULT_PRICE_MIN);
+                setPriceMax(DEFAULT_PRICE_MAX);
+                setPriceDirty(false);
+                setOpenKey(null);
+              }}
+            />
+          )}
+          {openKey === "motorisation" && (
+            <OptionList
+              options={[...MOTORISATIONS]}
+              selected={moto}
+              onSelect={(v) => {
+                setMoto(v);
+                setOpenKey(null);
+              }}
+            />
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-function Divider({ soft }: { soft: boolean }) {
+function Divider({ soft, hidden }: { soft: boolean; hidden?: boolean }) {
   return (
     <div
       className={cn(
-        "h-4 w-px shrink-0 transition-colors duration-300",
+        "h-4 w-px shrink-0 transition-[background-color,opacity] duration-300",
+        hidden && "opacity-0",
         soft ? "bg-white/30 group-hover/search:bg-border" : "bg-border"
       )}
     />
@@ -550,6 +571,7 @@ interface FilterButtonProps {
   soft: boolean;
   mobile?: boolean;
   onClick: () => void;
+  buttonRef?: React.Ref<HTMLButtonElement>;
 }
 
 function FilterButton({
@@ -559,30 +581,36 @@ function FilterButton({
   soft,
   mobile = false,
   onClick,
+  buttonRef,
 }: FilterButtonProps) {
   return (
     <button
+      ref={buttonRef}
       type="button"
       onClick={onClick}
       aria-expanded={active}
       className={cn(
-        "flex cursor-pointer items-center rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300",
-        mobile && "min-h-11 justify-between rounded-xl bg-muted text-foreground",
-        active && "bg-muted",
-        mobile
-          ? value
-            ? "text-foreground"
-            : "text-muted-foreground"
-          : soft
-            ? cn(
-                "group-hover/search:hover:bg-black/5",
-                value
-                  ? "text-white group-hover/search:text-foreground"
-                  : "text-white/80 group-hover/search:text-muted-foreground"
-            )
+        "relative z-10 flex items-center rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300",
+        active
+          ? "cursor-default text-foreground"
           : cn(
-              "hover:bg-black/5",
-              value ? "text-foreground" : "text-muted-foreground"
+              "cursor-pointer",
+              mobile && "min-h-11 justify-between rounded-xl bg-muted",
+              mobile
+                ? value
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+                : soft
+                  ? cn(
+                      "group-hover/search:hover:bg-black/5",
+                      value
+                        ? "text-white group-hover/search:text-foreground"
+                        : "text-white/80 group-hover/search:text-muted-foreground"
+                    )
+                  : cn(
+                      "hover:bg-black/5",
+                      value ? "text-foreground" : "text-muted-foreground"
+                    )
             )
       )}
     >
@@ -681,8 +709,10 @@ function OptionList({ options, selected, onSelect }: OptionListProps) {
           type="button"
           onClick={() => onSelect(null)}
           className={cn(
-            "flex w-full cursor-pointer items-center rounded-lg px-3 py-2 text-sm transition-colors hover:bg-muted",
-            selected === null && "bg-muted font-medium"
+            "flex w-full items-center rounded-lg px-3 py-2 text-sm transition-colors",
+            selected === null
+              ? "cursor-default bg-muted font-medium"
+              : "cursor-pointer hover:bg-muted"
           )}
         >
           Tous
@@ -694,8 +724,10 @@ function OptionList({ options, selected, onSelect }: OptionListProps) {
             type="button"
             onClick={() => onSelect(o)}
             className={cn(
-              "flex w-full cursor-pointer items-center rounded-lg px-3 py-2 text-sm transition-colors hover:bg-muted",
-              selected === o && "bg-muted font-medium"
+              "flex w-full items-center rounded-lg px-3 py-2 text-sm transition-colors",
+              selected === o
+                ? "cursor-default bg-muted font-medium"
+                : "cursor-pointer hover:bg-muted"
             )}
           >
             {o}
@@ -733,8 +765,10 @@ function PriceOptions({
           type="button"
           onClick={onClear}
           className={cn(
-            "flex w-full cursor-pointer items-center rounded-lg px-3 py-2 text-sm transition-colors hover:bg-muted",
-            !dirty && "bg-muted font-medium"
+            "flex w-full items-center rounded-lg px-3 py-2 text-sm transition-colors",
+            !dirty
+              ? "cursor-default bg-muted font-medium"
+              : "cursor-pointer hover:bg-muted"
           )}
         >
           Tous les tarifs
@@ -748,8 +782,10 @@ function PriceOptions({
               type="button"
               onClick={() => onSelect(option.min, option.max)}
               className={cn(
-                "flex w-full cursor-pointer items-center rounded-lg px-3 py-2 text-sm transition-colors hover:bg-muted",
-                selected && "bg-muted font-medium"
+                "flex w-full items-center rounded-lg px-3 py-2 text-sm transition-colors",
+                selected
+                  ? "cursor-default bg-muted font-medium"
+                  : "cursor-pointer hover:bg-muted"
               )}
             >
               {option.label}

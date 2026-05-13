@@ -19,10 +19,10 @@ export default async function BlogPage({
 
   return (
     <>
-      <Header />
+      <Header variant="light" />
       <main className="min-h-screen bg-background text-foreground">
         <section className="relative isolate overflow-hidden pb-24 pt-32 sm:pt-40">
-          <HeroGradient />
+          {/* <HeroGradient /> */}
           <Container className="relative max-w-7xl">
             <Suspense fallback={null}>
               <BlogGallery searchParams={resolvedSearchParams} />

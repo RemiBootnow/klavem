@@ -57,7 +57,7 @@ function HeroSection() {
               actions={[
                 {
                   label: "Je réserve mon véhicule",
-                  href: "/contact",
+                  href: "/vehicules",
                   variant: "secondary",
                   size: "xl" as const,
                 },

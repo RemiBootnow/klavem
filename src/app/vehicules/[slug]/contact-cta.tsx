@@ -9,7 +9,7 @@ interface ContactCtaProps {
   label?: string;
 }
 
-function ContactCta({ vehicleSlug, label = "Être contacté" }: ContactCtaProps) {
+function ContactCta({ vehicleSlug, label = "Réserver mon véhicule" }: ContactCtaProps) {
   const inlineRef = useRef<HTMLAnchorElement>(null);
   const [inView, setInView] = useState(true);
   const href = `/contact/?vehicle=${vehicleSlug}`;

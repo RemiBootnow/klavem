@@ -111,21 +111,37 @@ export default async function VehiclePage({ params }: PageProps) {
   const subtitle = getSubtitle(vehicle);
   const related = getRelatedVehicles(vehicle, 3);
 
-  const specRows = [
+  const isElectric = vehicle.motorisation === "Électrique";
+  const specRows: { label: string; value: string }[] = [
     { label: "Type de véhicule", value: getBodyCategory(vehicle) },
     { label: "Motorisation", value: vehicle.motorisation },
+    { label: "Transmission", value: vehicle.transmission },
+    isElectric
+      ? {
+          label: "Temps de charge",
+          value: vehicle.tempsCharge ?? "—",
+        }
+      : {
+          label: "Consommation",
+          value: vehicle.consommation ?? "—",
+        },
+    ...(vehicle.autonomie != null
+      ? [{ label: "Autonomie", value: `${vehicle.autonomie} km` }]
+      : []),
+    { label: "Coffre", value: `${vehicle.coffre} L` },
+    { label: "Places", value: String(vehicle.places) },
     { label: "Année", value: years },
     { label: "Catégorie", value: String(vehicle.category) },
   ];
 
   return (
     <>
-      <Header />
+      <Header variant="light" />
       <main>
         <section className="relative min-h-screen pt-24 pb-12 lg:pt-32">
-          <HeroGradient />
-          <Container>
-            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_400px] lg:items-start">
+          {/* <HeroGradient /> */}
+          <Container className="max-w-7xl">
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_440px] lg:items-start">
               <VehicleGallery images={vehicle.images} alt={name} />
 
               <aside className="flex flex-col gap-6 lg:sticky lg:top-24">
@@ -189,7 +205,7 @@ export default async function VehiclePage({ params }: PageProps) {
 
         {related.length > 0 && (
           <section className="section-y">
-            <Container>
+            <Container className="max-w-7xl">
               <div className="flex flex-col gap-10">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                   <ContentBlock
