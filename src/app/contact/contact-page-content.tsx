@@ -10,7 +10,15 @@ import {
   Wrench,
 } from "@phosphor-icons/react";
 import { formatName, type Vehicle } from "@/lib/vehicles";
+import { cn } from "@/lib/utils";
 import { ContactForm, UNDECIDED } from "./contact-form";
+
+function showcaseScaleClass(slug: string, bodyType: string): string {
+  if (slug === "toyota-auris-touring-sports-phase-2") return "scale-90";
+  if (bodyType.startsWith("Break") || bodyType.startsWith("Monospace"))
+    return "scale-100";
+  return "scale-125";
+}
 
 interface VehicleOption {
   slug: string;
@@ -119,7 +127,10 @@ function VehicleShowcase({ vehicle }: { vehicle: Vehicle }) {
           fill
           priority
           sizes="(min-width: 1024px) 50vw, 100vw"
-          className="scale-125 object-contain"
+          className={cn(
+            "object-contain",
+            showcaseScaleClass(vehicle.slug, vehicle.bodyType)
+          )}
         />
       </div>
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">

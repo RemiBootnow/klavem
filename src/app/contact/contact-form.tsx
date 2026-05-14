@@ -132,11 +132,7 @@ function ContactForm({
   const [step, setStep] = useState(initialVehicleSlug ? 2 : 1);
   const [submitted, setSubmitted] = useState(false);
   const [mdqlPushed, setMdqlPushed] = useState(false);
-  const [attempted, setAttempted] = useState(false);
-
-  useEffect(() => {
-    setAttempted(false);
-  }, [step]);
+  const [attemptedStep, setAttemptedStep] = useState<number | null>(null);
   const [form, setForm] = useState<FormState>(() =>
     buildInitialState(initialVehicleSlug)
   );
@@ -144,11 +140,6 @@ function ContactForm({
   useEffect(() => {
     onVehicleChange?.(form.vehicleSlug);
   }, [form.vehicleSlug, onVehicleChange]);
-
-  const selectedVehicle = useMemo(
-    () => vehicles.find((v) => v.slug === form.vehicleSlug),
-    [vehicles, form.vehicleSlug]
-  );
 
   const blockedOutsideIdf = form.location === "autre";
 
@@ -191,7 +182,7 @@ function ContactForm({
   }, [step, form]);
 
   const errors = useMemo(() => {
-    if (!attempted) return {} as Record<string, boolean>;
+    if (attemptedStep !== step) return {} as Record<string, boolean>;
     if (step === 2) {
       return {
         firstName: !form.firstName.trim(),
@@ -210,27 +201,30 @@ function ContactForm({
       };
     }
     return {};
-  }, [attempted, step, form]);
+  }, [attemptedStep, step, form]);
 
   function next() {
     if (!stepValid) {
-      setAttempted(true);
+      setAttemptedStep(step);
       return;
     }
     if (step === 1 && !form.vehicleSlug) {
       update("vehicleSlug", UNDECIDED);
     }
+    setAttemptedStep(null);
     setStep((s) => Math.min(s + 1, 3));
   }
 
   function back() {
+    setAttemptedStep(null);
     setStep((s) => Math.max(s - 1, 1));
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (step !== 3) return;
     if (!stepValid) {
-      setAttempted(true);
+      setAttemptedStep(step);
       return;
     }
 
@@ -247,23 +241,6 @@ function ContactForm({
       disqualification_reason: isMql ? null : "no_vtc_card",
     });
 
-    const lines = [
-      `Véhicule : ${vehicleLabel(selectedVehicle, form.vehicleSlug)}`,
-      `Nom : ${form.firstName} ${form.lastName}`,
-      `Email : ${form.email}`,
-      `Téléphone : ${form.phone}`,
-      `Localisation : ${labelFor(locationOptions, form.location)}`,
-      `Carte VTC : ${labelFor(cardStatusOptions, form.cardStatus)}`,
-      `Situation véhicule : ${labelFor(
-        vehicleSituationOptions,
-        form.vehicleSituation
-      )}`,
-      `Timing : ${labelFor(timingOptions, form.timing)}`,
-    ];
-    const url = `mailto:contact@klavem.fr?subject=${encodeURIComponent(
-      "[Klavem] Nouvelle demande VTC"
-    )}&body=${encodeURIComponent(lines.join("\n"))}`;
-    window.location.href = url;
     setSubmitted(true);
   }
 
@@ -294,6 +271,7 @@ function ContactForm({
               selectedSlug={form.vehicleSlug}
               onSelect={(slug) => {
                 update("vehicleSlug", slug);
+                setAttemptedStep(null);
                 setStep(2);
               }}
             />
@@ -510,6 +488,7 @@ function ContactForm({
       <div className="fixed inset-x-0 bottom-0 z-30 flex items-center gap-3 border-t border-border bg-background px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] lg:static lg:mt-8 lg:justify-end lg:border-t-0 lg:px-0 lg:pt-0 lg:pb-0">
         {step < 3 ? (
           <Button
+            key="continue"
             type="button"
             size="xl"
             onClick={next}
@@ -519,6 +498,7 @@ function ContactForm({
           </Button>
         ) : (
           <Button
+            key="submit"
             type="submit"
             size="xl"
             className="flex-1"
@@ -612,12 +592,7 @@ function RadioCards<T extends string>({
   invalid?: boolean;
 }) {
   return (
-    <div
-      className={cn(
-        "flex flex-wrap gap-2 rounded-xl transition-colors",
-        invalid && "-mx-2 -my-1 bg-destructive/5 px-2 py-1 ring-3 ring-destructive/20"
-      )}
-    >
+    <div className="flex flex-wrap gap-2">
       {options.map((opt) => {
         const selected = value === opt.value;
         return (
@@ -628,7 +603,7 @@ function RadioCards<T extends string>({
               selected
                 ? "border-primary bg-primary/5 text-primary"
                 : invalid
-                  ? "border-destructive/40 text-foreground"
+                  ? "border-destructive text-foreground"
                   : "border-border text-foreground hover:border-foreground/30"
             )}
           >
@@ -758,15 +733,6 @@ function VehicleSelectionStep({
   );
 }
 
-function vehicleLabel(
-  selected: VehicleOption | undefined,
-  rawValue: string
-): string {
-  if (selected) return selected.name;
-  if (rawValue === UNDECIDED) return "Je ne sais pas encore";
-  return "";
-}
-
 function SuccessState({ onReset }: { onReset: () => void }) {
   return (
     <div className="flex flex-col items-center gap-5 py-12 text-center">
@@ -779,8 +745,7 @@ function SuccessState({ onReset }: { onReset: () => void }) {
         </h2>
         <p className="max-w-md text-sm text-muted-foreground">
           Notre équipe revient vers vous en moins de 2h ouvrées avec une
-          proposition personnalisée. Un récapitulatif vient d&apos;être ouvert dans
-          votre messagerie — il vous suffit de l&apos;envoyer.
+          proposition personnalisée.
         </p>
       </div>
       <Button variant="outline" onClick={onReset}>
@@ -788,13 +753,6 @@ function SuccessState({ onReset }: { onReset: () => void }) {
       </Button>
     </div>
   );
-}
-
-function labelFor<T extends string>(
-  options: { value: T; label: string }[],
-  value: string
-): string {
-  return options.find((o) => o.value === value)?.label ?? "";
 }
 
 export { ContactForm, UNDECIDED };

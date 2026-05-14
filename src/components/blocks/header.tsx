@@ -25,6 +25,7 @@ function Header({ variant = "transparent" }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
   const isLight = variant === "light";
 
   useEffect(() => {
@@ -35,6 +36,23 @@ function Header({ variant = "transparent" }: HeaderProps) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [isLight]);
+
+  useEffect(() => {
+    if (!open) return;
+    function onDocPointerDown(e: PointerEvent) {
+      if (!headerRef.current) return;
+      if (!headerRef.current.contains(e.target as Node)) setOpen(false);
+    }
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("pointerdown", onDocPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onDocPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
 
   const solid = isLight || scrolled || open;
 
@@ -49,6 +67,7 @@ function Header({ variant = "transparent" }: HeaderProps) {
       )}
     />
     <header
+      ref={headerRef}
       data-slot="header"
       className={cn(
         "fixed top-0 left-0 right-0 z-50",
