@@ -13,9 +13,17 @@ import {
 import { ContactPageContent } from "./contact-page-content";
 
 export const metadata: Metadata = {
-  title: "Contact | Klavem Fleet",
+  title: "Contact",
   description:
-    "Contactez Klavem Fleet pour louer votre véhicule VTC en Île-de-France. Agence à Rueil-Malmaison, réponse en moins de 2h.",
+    "Contactez Klavem Fleet pour louer votre véhicule VTC en Île-de-France. Réponse en moins de 2h ouvrées. Tél. 01 89 62 31 22.",
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    type: "website",
+    url: "/contact",
+    title: "Contact | Klavem Fleet",
+    description:
+      "Contactez Klavem Fleet pour louer votre véhicule VTC en Île-de-France. Réponse en moins de 2h ouvrées.",
+  },
 };
 
 const formVehicles = vehicles.map((v) => ({

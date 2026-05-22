@@ -14,6 +14,8 @@ function FallbackImage({
   fallback = "/vehicules/kia.png",
   alt,
   className,
+  loading = "lazy",
+  decoding = "async",
   ...props
 }: FallbackImageProps) {
   const [errored, setErrored] = useState(false);
@@ -26,6 +28,8 @@ function FallbackImage({
     <img
       src={errored ? fallback : src}
       alt={alt}
+      loading={loading}
+      decoding={decoding}
       className={cn(className)}
       onError={() => setErrored(true)}
       {...props}

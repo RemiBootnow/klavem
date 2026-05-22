@@ -48,12 +48,30 @@ export async function generateMetadata({
 }: Pick<PageProps, "params">): Promise<Metadata> {
   const { slug } = await params;
   const vehicle = getVehicleBySlug(slug);
-  if (!vehicle) return { title: "Véhicule introuvable | Klavem Fleet" };
+  if (!vehicle) return { title: "Véhicule introuvable" };
 
   const name = formatName(vehicle);
+  const weekly =
+    vehicle.tarifJournalier !== null ? vehicle.tarifJournalier * 7 : null;
+  const description = `Louez le ${name} (${vehicle.bodyType}, ${vehicle.motorisation.toLowerCase()}) en Île-de-France${weekly !== null ? ` dès ${weekly}€/semaine` : ""}. Entretien et assurance VTC inclus.`;
+  const path = `/vehicules/${slug}`;
   return {
-    title: `${name} — Location VTC | Klavem Fleet`,
-    description: `Louez le ${name} (${vehicle.bodyType}, ${vehicle.motorisation.toLowerCase()}) en Île-de-France. Entretien et assurance inclus.`,
+    title: `${name} — Location VTC`,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "website",
+      url: path,
+      title: `${name} — Location VTC | Klavem Fleet`,
+      description,
+      images: [vehicle.image],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${name} — Location VTC | Klavem Fleet`,
+      description,
+      images: [vehicle.image],
+    },
   };
 }
 
@@ -119,6 +137,51 @@ export default async function VehiclePage({
   const subtitle = getSubtitle(vehicle);
   const related = getRelatedVehicles(vehicle, 3);
 
+  const weekly =
+    vehicle.tarifJournalier !== null ? vehicle.tarifJournalier * 7 : null;
+  const SITE_URL = "https://klavem.fr";
+  const vehiclePath = `/vehicules/${vehicle.slug}`;
+  const vehicleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Vehicle",
+    name,
+    brand: { "@type": "Brand", name: vehicle.brand },
+    model: vehicle.model,
+    vehicleModelDate: years,
+    bodyType: vehicle.bodyType,
+    fuelType: vehicle.motorisation,
+    vehicleTransmission: vehicle.transmission,
+    numberOfDoors: 5,
+    vehicleSeatingCapacity: vehicle.places,
+    cargoVolume: { "@type": "QuantitativeValue", value: vehicle.coffre, unitCode: "LTR" },
+    image: `${SITE_URL}${vehicle.image}`,
+    url: `${SITE_URL}${vehiclePath}`,
+    ...(weekly !== null && {
+      offers: {
+        "@type": "Offer",
+        price: weekly,
+        priceCurrency: "EUR",
+        availability: "https://schema.org/InStock",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: weekly,
+          priceCurrency: "EUR",
+          referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "WEE" },
+        },
+        seller: { "@id": `${SITE_URL}/#organization` },
+      },
+    }),
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Véhicules", item: `${SITE_URL}/vehicules` },
+      { "@type": "ListItem", position: 3, name, item: `${SITE_URL}${vehiclePath}` },
+    ],
+  };
+
   const isElectric = vehicle.motorisation === "Électrique";
   const specRows: { label: string; value: string }[] = [
     { label: "Type de véhicule", value: getBodyCategory(vehicle) },
@@ -144,6 +207,14 @@ export default async function VehiclePage({
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(vehicleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Header variant="light" />
       <main>
         <section className="relative min-h-screen pt-24 pb-12 lg:pt-32">

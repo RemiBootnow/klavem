@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { Headline } from "@/components/components/headline";
-import { FallbackImage } from "@/components/components/fallback-image";
 import {
   formatName,
   formatYears,
@@ -104,11 +104,13 @@ function VehicleCard({
           {vehicle.bodyType} de {formatYears(vehicle)}
         </span>
       </div>
-      <div className="relative">
-        <FallbackImage
+      <div className="relative aspect-[3/2] w-full">
+        <Image
           src={images[idx]}
           alt={`${name} — location VTC Île-de-France — Klavem Fleet`}
-          className="w-full"
+          fill
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          className="object-contain"
         />
         {images.length > 1 && (
           <>

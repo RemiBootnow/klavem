@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface Testimonial {
@@ -32,10 +33,12 @@ function TestimonialCard({
           className="relative flex w-[340px] shrink-0 flex-col justify-end gap-4 overflow-hidden rounded-2xl p-6 aspect-3/4"
         >
           {testimonial.image && (
-            <img
+            <Image
               src={testimonial.image}
               alt={testimonial.name}
-              className="absolute inset-0 size-full object-cover -z-10"
+              fill
+              sizes="340px"
+              className="object-cover -z-10"
             />
           )}
           <div className="absolute inset-0 -z-10 bg-black/30" />
