@@ -18,7 +18,7 @@ interface PriceToggleProps {
 }
 
 function PriceToggle({ daily }: PriceToggleProps) {
-  const [unit, setUnit] = useState<PriceUnit>("month");
+  const [unit, setUnit] = useState<PriceUnit>("week");
 
   if (daily === null) {
     return (

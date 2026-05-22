@@ -64,3 +64,30 @@ export const MOTORISATIONS: Motorisation[] = [
 export const CATEGORIES: number[] = [
   ...new Set(vehicles.map((v) => v.category)),
 ].sort((a, b) => a - b);
+
+export const SHOWCASE_COLORS = ["black", "white", "grey"] as const;
+export type ShowcaseColor = (typeof SHOWCASE_COLORS)[number];
+
+export function parseShowcaseColor(
+  value: string | string[] | undefined
+): ShowcaseColor {
+  const raw = Array.isArray(value) ? value[0] : value;
+  return (SHOWCASE_COLORS as readonly string[]).includes(raw ?? "")
+    ? (raw as ShowcaseColor)
+    : "black";
+}
+
+export function applyColorVariant(
+  vehicle: Vehicle,
+  color: ShowcaseColor
+): Vehicle {
+  if (color === "black") return vehicle;
+  const suffix = `-${color}`;
+  const swap = (src: string) =>
+    src.replace(/\/([123])\.png$/, `/$1${suffix}.png`);
+  return {
+    ...vehicle,
+    image: swap(vehicle.image),
+    images: vehicle.images.map(swap),
+  };
+}

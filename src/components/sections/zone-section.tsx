@@ -21,7 +21,7 @@ function ZoneSection() {
       className="relative flex min-h-screen flex-col overflow-hidden text-white"
     >
       <Image
-        src="/home/île-de-france/île de france.png"
+        src="/home/île-de-france/île-de-france-v2.jpg"
         alt=""
         fill
         className="-z-10 object-cover"

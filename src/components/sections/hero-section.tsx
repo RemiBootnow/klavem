@@ -8,7 +8,7 @@ function HeroSection() {
     <section
       data-slot="hero-section"
       data-theme="dark"
-      className="relative bg-[#0F0821] text-white lg:flex lg:min-h-[calc(100vh+200px)] lg:flex-col"
+      className="relative bg-[#0F0821] text-white lg:flex lg:min-h-screen lg:flex-col"
     >
       <div className="relative isolate flex min-h-screen flex-col overflow-hidden lg:absolute lg:inset-0 lg:min-h-0">
         <div
@@ -19,17 +19,20 @@ function HeroSection() {
               "linear-gradient(180deg, #0F0821 0%, #004276 100%)",
           }}
         />
-        <div className="absolute inset-x-0 bottom-0 top-1/3 -z-10 overflow-hidden lg:top-0">
+        <div className="absolute inset-0 -z-10 overflow-hidden">
           <Image
-            src="/home/hero/big-hero.jpg"
+            src="/home/hero/two-cars-hero-mobile-v2.svg"
             alt=""
             fill
             priority
-            className="object-cover object-bottom lg:object-center"
+            className="object-cover object-center lg:hidden"
           />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 bg-black/40"
+          <Image
+            src="/home/hero/two-cars-hero-v3.jpg"
+            alt=""
+            fill
+            priority
+            className="hidden object-cover object-center lg:block"
           />
           <div
             aria-hidden
@@ -37,6 +40,14 @@ function HeroSection() {
             style={{
               background:
                 "linear-gradient(180deg, #014276 0%, rgba(1, 66, 118, 0) 100%)",
+            }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 hidden h-1/3 lg:block"
+            style={{
+              background:
+                "linear-gradient(180deg, #150B2D 0%, rgba(21, 11, 45, 0) 100%)",
             }}
           />
         </div>

@@ -5,15 +5,29 @@ import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { Headline } from "@/components/components/headline";
 import { FallbackImage } from "@/components/components/fallback-image";
-import { formatName, formatYears, type Vehicle } from "@/lib/vehicles";
+import {
+  formatName,
+  formatYears,
+  type ShowcaseColor,
+  type Vehicle,
+} from "@/lib/vehicles";
 
 interface VehicleCardProps extends React.HTMLAttributes<HTMLDivElement> {
   vehicle: Vehicle;
+  colorVariant?: ShowcaseColor;
 }
 
-function VehicleCard({ vehicle, className, ...props }: VehicleCardProps) {
+function VehicleCard({
+  vehicle,
+  colorVariant,
+  className,
+  ...props
+}: VehicleCardProps) {
   const name = formatName(vehicle);
-  const href = `/vehicules/${vehicle.slug}`;
+  const href =
+    colorVariant && colorVariant !== "black"
+      ? `/vehicules/${vehicle.slug}?color=${colorVariant}`
+      : `/vehicules/${vehicle.slug}`;
   const images = vehicle.images.length > 0 ? vehicle.images : [vehicle.image];
   const [idx, setIdx] = useState(0);
   const tarifHebdomadaire =
