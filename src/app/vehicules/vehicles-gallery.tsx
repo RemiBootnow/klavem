@@ -4,7 +4,12 @@ import { useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { VehicleCard } from "@/components/blocks/vehicle-card";
 import { buttonVariants } from "@/components/components/ui/button-variants";
-import { getBodyCategory, vehicles } from "@/lib/vehicles";
+import {
+  SHOWCASE_COLORS,
+  applyColorVariant,
+  getBodyCategory,
+  vehicles,
+} from "@/lib/vehicles";
 
 function VehiclesGallery() {
   const router = useRouter();
@@ -52,9 +57,16 @@ function VehiclesGallery() {
     <div className="flex flex-col gap-10">
       {filtered.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((v) => (
-            <VehicleCard key={v.slug} vehicle={v} />
-          ))}
+          {filtered.map((v, i) => {
+            const color = SHOWCASE_COLORS[i % SHOWCASE_COLORS.length];
+            return (
+              <VehicleCard
+                key={v.slug}
+                vehicle={applyColorVariant(v, color)}
+                colorVariant={color}
+              />
+            );
+          })}
         </div>
       ) : (
         <div className="flex flex-col items-center gap-4 py-16 text-center">

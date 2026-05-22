@@ -19,11 +19,13 @@ import { FaqSection } from "@/components/sections/faq-section";
 import { buttonVariants } from "@/components/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 import {
+  applyColorVariant,
   formatName,
   formatYears,
   getBodyCategory,
   getRelatedVehicles,
   getVehicleBySlug,
+  parseShowcaseColor,
   vehicles,
   type Motorisation,
   type Vehicle,
@@ -34,6 +36,7 @@ import { PriceToggle } from "./price-toggle";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ color?: string | string[] }>;
 }
 
 export async function generateStaticParams() {
@@ -42,7 +45,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: Pick<PageProps, "params">): Promise<Metadata> {
   const { slug } = await params;
   const vehicle = getVehicleBySlug(slug);
   if (!vehicle) return { title: "Véhicule introuvable | Klavem Fleet" };
@@ -101,10 +104,15 @@ function HeroGradient() {
   );
 }
 
-export default async function VehiclePage({ params }: PageProps) {
+export default async function VehiclePage({
+  params,
+  searchParams,
+}: PageProps) {
   const { slug } = await params;
-  const vehicle = getVehicleBySlug(slug);
-  if (!vehicle) notFound();
+  const { color } = await searchParams;
+  const baseVehicle = getVehicleBySlug(slug);
+  if (!baseVehicle) notFound();
+  const vehicle = applyColorVariant(baseVehicle, parseShowcaseColor(color));
 
   const name = formatName(vehicle);
   const years = formatYears(vehicle);
