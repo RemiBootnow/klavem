@@ -30,6 +30,7 @@ interface Vehicle {
   brand: string;
   model: string;
   variant: string | null;
+  bodyType: string;
   yearFrom: number;
   yearTo: number;
 }
@@ -47,21 +48,58 @@ const ALL_VIEWS: ViewName[] = [
   "interior-rear",
   "interior-cockpit",
 ];
+const EXTERIOR_VIEWS: ViewName[] = ["front", "side", "rear"];
+
+type ColorName = "black" | "white" | "grey";
+const ALL_COLORS: ColorName[] = ["black", "white", "grey"];
+
+interface ColorPaint {
+  short: string; // used in the lead-in
+  detailed: string; // used in the "Body paint:" instruction
+  suffix: string; // filename suffix (empty for default black)
+}
+
+const COLOR_PAINTS: Record<ColorName, ColorPaint> = {
+  black: {
+    short:
+      "deep gloss black (high-gloss jet-black paint with crisp white/silver specular highlights, mirror-like reflections, no blue tint, no navy, no dark blue, no graphite, no matte or satin finish)",
+    detailed:
+      "deep glossy jet-black with sharp white/silver specular highlights and clean mirror-like reflections along the bodylines, hood, roof, and side panels. The base tone is pure black — never blue, never navy, never dark blue, never graphite. Highlights from the studio lights should appear pale white/silver on the curves; the rest of the panels stay deep black. The finish is high-gloss, not matte and not satin.",
+    suffix: "",
+  },
+  white: {
+    short:
+      "deep gloss pearl white (high-gloss bright pearl-white paint with crisp pale specular highlights, mirror-like reflections, no yellow tint, no beige, no cream, no ivory, no matte or satin finish)",
+    detailed:
+      "deep glossy pearl-white with sharp pale specular highlights and clean mirror-like reflections along the bodylines, hood, roof, and side panels. The base tone is pure bright white — never beige, never cream, never ivory, never yellow-tinted. Reflections from the studio lights appear as soft pale-grey accents on the shadowed curves; the rest of the panels stay clean bright white. The finish is high-gloss pearl, not matte and not satin.",
+    suffix: "-white",
+  },
+  grey: {
+    short:
+      "deep gloss metallic medium grey (high-gloss medium silver-grey paint with crisp pale specular highlights, mirror-like reflections, no green tint, no brown, no blue tint, no matte or satin finish)",
+    detailed:
+      "deep glossy metallic medium silver-grey with sharp pale specular highlights and clean mirror-like reflections along the bodylines, hood, roof, and side panels. The base tone is neutral mid-grey with subtle metallic flake — never blue, never green, never brown. Highlights from the studio lights appear pale white/silver on the curves; shadowed panels deepen toward a darker grey. The finish is high-gloss metallic, not matte and not satin.",
+    suffix: "-grey",
+  },
+};
 
 interface ViewConfig {
-  filename: (slug: string) => string;
+  filename: (slug: string, colorSuffix: string) => string;
   width: number;
   height: number;
   aspectRatio: "3:2" | "4:3" | "16:9" | "1:1";
   removeBackground: boolean;
   addShadow: boolean;
-  promptBuilder: (v: Vehicle, vehicleLabel: string) => string;
+  promptBuilder: (
+    v: Vehicle,
+    vehicleLabel: string,
+    paint: ColorPaint
+  ) => string;
 }
 
 const GEMINI_MODEL = "gemini-3.1-flash-image-preview";
 const DELAY_MS = 1500;
 const PHOTOROOM_URL = "https://image-api.photoroom.com/v2/edit";
-const COLOR = "solid pure black (jet black paint, no blue tint, no grey, no dark blue, no navy)";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, "..");
@@ -72,18 +110,35 @@ function labelFor(vehicle: Vehicle): string {
     vehicle.variant && !/^Phase \d+$/i.test(vehicle.variant)
       ? ` ${vehicle.variant.replace(/\s*Phase \d+$/i, "").trim()}`
       : "";
-  return `${vehicle.model}${variant}`.trim();
+  const wagonHint =
+    vehicle.bodyType.startsWith("Break") &&
+    !/touring sports?|wagon|estate|break/i.test(variant)
+      ? " Touring Sports (estate / station-wagon body, long roofline extending to the rear, large tailgate, NOT a hatchback or sedan)"
+      : "";
+  const slugHint =
+    vehicle.slug === "kia-ev4"
+      ? " (compact electric fastback sedan, NOT a crossover or SUV, twin LED headlight signature, low coupé-like roofline)"
+      : vehicle.slug.startsWith("hyundai-ioniq-phase-")
+        ? " (original Ioniq hybrid liftback hatchback, AE-generation 2016-2022, NOT the IONIQ 5, NOT the IONIQ 6, NOT any modern EV with pixel headlights — conventional Hyundai hex grille, narrow swept headlights, low aerodynamic fastback roofline)"
+        : "";
+  return `${vehicle.model}${variant}${wagonHint}${slugHint}`.trim();
+}
+
+function yearTag(vehicle: Vehicle): string {
+  return vehicle.yearFrom === vehicle.yearTo
+    ? `${vehicle.yearFrom}`
+    : `${vehicle.yearFrom}-${vehicle.yearTo}`;
 }
 
 const VIEWS: Record<ViewName, ViewConfig> = {
   front: {
-    filename: (slug) => `${slug}/1.png`,
+    filename: (slug, suffix) => `${slug}/1${suffix}.png`,
     width: 2048,
     height: 1365,
     aspectRatio: "3:2",
     removeBackground: true,
     addShadow: true,
-    promptBuilder: (vehicle, label) => `Professional automotive studio photograph of a ${vehicle.yearTo} ${vehicle.brand} ${label} in ${COLOR} finish. Wide landscape format, 3:2 widescreen aspect ratio.
+    promptBuilder: (vehicle, label, paint) => `Professional automotive studio photograph of a ${yearTag(vehicle)} ${vehicle.brand} ${label} in ${paint.short} finish. Wide landscape format, 3:2 widescreen aspect ratio.
 
 Composition: Front three-quarter view from the driver's side, camera positioned slightly low (approximately bumper height), lens at about 35-40mm equivalent. The vehicle is centered in the frame, facing toward the left at a ~30 degree angle so both the full front fascia and driver-side profile are clearly visible. Wheels turned slightly toward the camera. The car occupies roughly 80% of the frame width.
 
@@ -91,55 +146,55 @@ Lighting: Clean, even studio lighting with soft diffused highlights along the ho
 
 Background: Pure solid white (#FFFFFF), completely seamless, completely empty. No floor, no ground plane, no horizon line, no shadow, no gradient, no environment, no reflections of any kind on the ground. The car appears to float on a clean white background.
 
-Body paint: the car must be pure black (#000000) — under no circumstances blue, navy, dark blue, graphite, or grey. If in doubt, err toward black-crow / obsidian, never toward blue.
+Body paint: ${paint.detailed}
 
 Style: High-resolution commercial catalog photography, sharp focus throughout, photorealistic, factory-fresh condition, clean body panels, no dirt or scratches, no license plate text, no dealership branding, no people, no text, no additional graphics or annotations.`,
   },
 
   side: {
-    filename: (slug) => `${slug}/2.png`,
+    filename: (slug, suffix) => `${slug}/2${suffix}.png`,
     width: 2048,
     height: 1365,
     aspectRatio: "3:2",
     removeBackground: true,
     addShadow: true,
-    promptBuilder: (vehicle, label) => `Professional automotive studio photograph of a ${vehicle.yearTo} ${vehicle.brand} ${label} in ${COLOR}, captured in a pure side profile view at a perfect 90-degree angle. The entire vehicle is centered in frame with equal space on both sides. Shot with a long telephoto lens (around 200mm) to eliminate perspective distortion, camera positioned at the car's beltline height. Wide landscape format, 3:2 widescreen aspect ratio.
+    promptBuilder: (vehicle, label, paint) => `Professional automotive studio photograph of a ${yearTag(vehicle)} ${vehicle.brand} ${label} in ${paint.short}, captured in a pure side profile view at a perfect 90-degree angle. The entire vehicle is centered in frame with equal space on both sides. Shot with a long telephoto lens (around 200mm) to eliminate perspective distortion, camera positioned at the car's beltline height. Wide landscape format, 3:2 widescreen aspect ratio.
 
 Lighting: Clean, even, soft studio lighting directional from the front-side to emphasize the bodyline, door creases, and wheel design without harsh shadows. Crisp reflections along the doors reveal the car's curvature. Tires sharp, wheels clean and detailed.
 
 Background: Pure solid white (#FFFFFF), completely seamless, completely empty. No floor, no ground plane, no horizon line, no shadow, no gradient, no environment, no reflections of any kind on the ground. The car appears to float on a clean white background.
 
-Body paint: the car must be pure black (#000000) — under no circumstances blue, navy, dark blue, graphite, or grey. If in doubt, err toward black-crow / obsidian, never toward blue.
+Body paint: ${paint.detailed}
 
 Style: Ultra-high resolution, photorealistic, commercial catalog quality, factory-fresh condition, clean body panels, no dirt or scratches, no license plate text, no dealership branding, no people, no text, no additional graphics or annotations.`,
   },
 
   rear: {
-    filename: (slug) => `${slug}/3.png`,
+    filename: (slug, suffix) => `${slug}/3${suffix}.png`,
     width: 2048,
     height: 1365,
     aspectRatio: "3:2",
     removeBackground: true,
     addShadow: true,
-    promptBuilder: (vehicle, label) => `Professional automotive studio photograph of a ${vehicle.yearTo} ${vehicle.brand} ${label} in ${COLOR}, shot from the rear three-quarter angle (approximately 45 degrees behind the vehicle, from the driver's side). Camera at roughly hip height, lens around 50–85mm for natural proportions. The framing reveals the full rear end — taillights, badge, bumper, exhaust — along with the rear door, rear wheel, and a hint of the roofline. Wide landscape format, 3:2 widescreen aspect ratio.
+    promptBuilder: (vehicle, label, paint) => `Professional automotive studio photograph of a ${yearTag(vehicle)} ${vehicle.brand} ${label} in ${paint.short}, shot from the rear three-quarter angle (approximately 45 degrees behind the vehicle, from the driver's side). Camera at roughly hip height, lens around 50–85mm for natural proportions. The framing reveals the full rear end — taillights, badge, bumper, exhaust — along with the rear door, rear wheel, and a hint of the roofline. Wide landscape format, 3:2 widescreen aspect ratio.
 
 Lighting: Clean, even studio lighting with soft diffused highlights. Taillights softly glowing. Reflections on the paint show depth and gloss. Gentle specular highlights on the chrome accents and wheels.
 
 Background: Pure solid white (#FFFFFF), completely seamless, completely empty. No floor, no ground plane, no horizon line, no shadow, no gradient, no environment, no reflections of any kind on the ground. The car appears to float on a clean white background.
 
-Body paint: the car must be pure black (#000000) — under no circumstances blue, navy, dark blue, graphite, or grey. If in doubt, err toward black-crow / obsidian, never toward blue.
+Body paint: ${paint.detailed}
 
 Style: High-resolution commercial catalog photography, sharp focus throughout, photorealistic, factory-fresh condition, clean body panels, no dirt or scratches, no license plate text, no dealership branding, no people, no text, no additional graphics or annotations.`,
   },
 
   "interior-rear": {
-    filename: (slug) => `${slug}/4.png`,
+    filename: (slug, suffix) => `${slug}/4${suffix}.png`,
     width: 2048,
     height: 1365,
     aspectRatio: "3:2",
     removeBackground: false,
     addShadow: false,
-    promptBuilder: (vehicle, label) => `Photorealistic interior photograph of a ${vehicle.yearTo} ${vehicle.brand} ${label}, showing the rear passenger area.
+    promptBuilder: (vehicle, label) => `Photorealistic interior photograph of a ${yearTag(vehicle)} ${vehicle.brand} ${label}, showing the rear passenger area.
 
 Camera: inside the cabin near the front passenger headrest, wide-angle 20mm lens, angled back and slightly down toward the rear bench. 3:2 widescreen, landscape orientation.
 
@@ -149,13 +204,13 @@ No people, no text, no watermarks. Ultra-sharp focus, premium automotive catalog
   },
 
   "interior-cockpit": {
-    filename: (slug) => `${slug}/5.png`,
+    filename: (slug, suffix) => `${slug}/5${suffix}.png`,
     width: 2048,
     height: 1365,
     aspectRatio: "3:2",
     removeBackground: false,
     addShadow: false,
-    promptBuilder: (vehicle, label) => `Photorealistic interior photograph of a ${vehicle.yearTo} ${vehicle.brand} ${label}, showing the driver's cockpit.
+    promptBuilder: (vehicle, label) => `Photorealistic interior photograph of a ${yearTag(vehicle)} ${vehicle.brand} ${label}, showing the driver's cockpit.
 
 Camera: inside the cabin at the rear passenger side, wide-angle 20mm lens, angled forward and slightly down toward the driver's seat and dashboard. Front passenger seat partially visible in the foreground on the left edge. 3:2 widescreen, landscape orientation.
 
@@ -171,7 +226,8 @@ const MAX_ASPECT_RETRIES = 3;
 async function generateWithGemini(
   ai: GoogleGenAI,
   vehicle: Vehicle,
-  view: ViewConfig
+  view: ViewConfig,
+  paint: ColorPaint
 ): Promise<Buffer> {
   const label = labelFor(vehicle);
   const targetAspect = view.width / view.height;
@@ -179,7 +235,7 @@ async function generateWithGemini(
   for (let attempt = 1; attempt <= MAX_ASPECT_RETRIES; attempt++) {
     const response = await ai.models.generateContent({
       model: GEMINI_MODEL,
-      contents: view.promptBuilder(vehicle, label),
+      contents: view.promptBuilder(vehicle, label, paint),
       config: {
         responseModalities: ["IMAGE"],
         imageConfig: {
@@ -273,16 +329,17 @@ async function processOne(
   ai: GoogleGenAI,
   vehicle: Vehicle,
   view: ViewConfig,
+  paint: ColorPaint,
   photoroomKey: string | null
 ): Promise<"generated" | "failed"> {
-  const outputPath = join(outputDir, view.filename(vehicle.slug));
+  const outputPath = join(outputDir, view.filename(vehicle.slug, paint.suffix));
   const outputParent = dirname(outputPath);
   if (!existsSync(outputParent)) mkdirSync(outputParent, { recursive: true });
   const rawDir = join(outputParent, "raw");
   if (!existsSync(rawDir)) mkdirSync(rawDir, { recursive: true });
   const rawPath = join(rawDir, basename(outputPath));
   try {
-    const raw = await generateWithGemini(ai, vehicle, view);
+    const raw = await generateWithGemini(ai, vehicle, view, paint);
     writeFileSync(rawPath, raw);
     console.log(`  ✓ ${rawPath} (raw Gemini)`);
     const processed =
@@ -306,15 +363,31 @@ async function main() {
   const onlySlug = slugIdx >= 0 ? args[slugIdx + 1] : null;
   const viewIdx = args.indexOf("--view");
   const viewArg = viewIdx >= 0 ? args[viewIdx + 1] : "front";
+  const colorIdx = args.indexOf("--color");
+  const colorArg = colorIdx >= 0 ? args[colorIdx + 1] : "black";
 
   let selectedViews: ViewName[];
   if (viewArg === "all") {
     selectedViews = ALL_VIEWS;
+  } else if (viewArg === "exterior") {
+    selectedViews = EXTERIOR_VIEWS;
   } else if (ALL_VIEWS.includes(viewArg as ViewName)) {
     selectedViews = [viewArg as ViewName];
   } else {
     console.error(
-      `Unknown view "${viewArg}". Valid: ${ALL_VIEWS.join(", ")}, all`
+      `Unknown view "${viewArg}". Valid: ${ALL_VIEWS.join(", ")}, all, exterior`
+    );
+    process.exit(1);
+  }
+
+  let selectedColors: ColorName[];
+  if (colorArg === "all") {
+    selectedColors = ALL_COLORS;
+  } else if (ALL_COLORS.includes(colorArg as ColorName)) {
+    selectedColors = [colorArg as ColorName];
+  } else {
+    console.error(
+      `Unknown color "${colorArg}". Valid: ${ALL_COLORS.join(", ")}, all`
     );
     process.exit(1);
   }
@@ -350,26 +423,38 @@ async function main() {
   let skipped = 0;
   let failed = 0;
 
-  const tasks: Array<{ vehicle: Vehicle; viewName: ViewName }> = [];
+  const tasks: Array<{
+    vehicle: Vehicle;
+    viewName: ViewName;
+    colorName: ColorName;
+  }> = [];
   for (const vehicle of list) {
-    for (const viewName of selectedViews) {
-      tasks.push({ vehicle, viewName });
+    for (const colorName of selectedColors) {
+      for (const viewName of selectedViews) {
+        tasks.push({ vehicle, viewName, colorName });
+      }
     }
   }
 
   for (let i = 0; i < tasks.length; i++) {
-    const { vehicle, viewName } = tasks[i];
+    const { vehicle, viewName, colorName } = tasks[i];
     const view = VIEWS[viewName];
-    const outputPath = join(outputDir, view.filename(vehicle.slug));
+    const paint = COLOR_PAINTS[colorName];
+    const outputPath = join(
+      outputDir,
+      view.filename(vehicle.slug, paint.suffix)
+    );
 
     if (existsSync(outputPath) && !force) {
-      console.log(`• skip  ${vehicle.slug} [${viewName}] (already exists)`);
+      console.log(
+        `• skip  ${vehicle.slug} [${viewName}/${colorName}] (already exists)`
+      );
       skipped++;
       continue;
     }
 
-    console.log(`• gen   ${vehicle.slug} [${viewName}]`);
-    const result = await processOne(ai, vehicle, view, photoroomKey);
+    console.log(`• gen   ${vehicle.slug} [${viewName}/${colorName}]`);
+    const result = await processOne(ai, vehicle, view, paint, photoroomKey);
     if (result === "generated") generated++;
     else failed++;
 
