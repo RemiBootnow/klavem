@@ -8,9 +8,17 @@ import { CtaSection } from "@/components/sections/cta-section";
 import { VehiclesGallery } from "./vehicles-gallery";
 
 export const metadata: Metadata = {
-  title: "Tous nos véhicules VTC | Klavem Fleet",
+  title: "Tous nos véhicules VTC",
   description:
-    "Découvrez notre flotte complète de véhicules VTC hybrides et électriques disponibles à la location en Île-de-France.",
+    "Découvrez notre flotte complète de véhicules VTC hybrides et électriques disponibles à la location en Île-de-France. Tarifs hebdomadaires tout inclus.",
+  alternates: { canonical: "/vehicules" },
+  openGraph: {
+    type: "website",
+    url: "/vehicules",
+    title: "Tous nos véhicules VTC | Klavem Fleet",
+    description:
+      "Découvrez notre flotte complète de véhicules VTC hybrides et électriques disponibles à la location en Île-de-France.",
+  },
 };
 
 export default function VehiculesPage() {
@@ -22,7 +30,10 @@ export default function VehiculesPage() {
           {/* <HeroGradient /> */}
           <Container className="max-w-7xl">
             <div className="flex flex-col gap-8 lg:gap-12">
-              <ContentBlock headline="Choisissez votre véhicule" />
+              <ContentBlock
+                headline="Choisissez votre véhicule VTC"
+                headlineLevel={1}
+              />
               <Suspense fallback={null}>
                 <VehiclesGallery />
               </Suspense>

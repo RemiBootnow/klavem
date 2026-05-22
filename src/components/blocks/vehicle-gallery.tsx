@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { CaretLeft, CaretRight, X } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { FallbackImage } from "@/components/components/fallback-image";
@@ -76,10 +77,13 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
           )}
           aria-label={`${alt} — photo 1`}
         >
-          <FallbackImage
+          <Image
             src={images[0]}
             alt={alt}
-            className="h-full w-full object-contain"
+            fill
+            priority
+            sizes="(min-width: 1024px) 60vw, 100vw"
+            className="object-contain"
           />
         </button>
 
@@ -90,10 +94,12 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
             className="relative aspect-4/3 cursor-pointer overflow-hidden transition-transform active:scale-[0.98] rounded-2xl bg-muted"
             aria-label={`${alt} — photo 2`}
           >
-            <FallbackImage
+            <Image
               src={images[1]}
               alt={alt}
-              className="h-full w-full object-contain"
+              fill
+              sizes="(min-width: 1024px) 60vw, 100vw"
+              className="object-contain"
             />
           </button>
         )}
@@ -106,10 +112,12 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
               className="relative aspect-4/3 cursor-pointer overflow-hidden transition-transform active:scale-[0.98] rounded-t-[4px] rounded-bl-2xl rounded-br-[4px] bg-muted"
               aria-label={`${alt} — photo 2`}
             >
-              <FallbackImage
+              <Image
                 src={images[1]}
                 alt={alt}
-                className="h-full w-full object-contain"
+                fill
+                sizes="(min-width: 1024px) 30vw, 50vw"
+                className="object-contain"
               />
             </button>
             <button
@@ -118,10 +126,12 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
               className="relative aspect-4/3 cursor-pointer overflow-hidden transition-transform active:scale-[0.98] rounded-t-[4px] rounded-bl-[4px] rounded-br-2xl bg-muted"
               aria-label={`${alt} — photo 3`}
             >
-              <FallbackImage
+              <Image
                 src={images[2]}
                 alt={alt}
-                className="h-full w-full object-contain"
+                fill
+                sizes="(min-width: 1024px) 30vw, 50vw"
+                className="object-contain"
               />
             </button>
           </div>

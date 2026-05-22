@@ -31,14 +31,29 @@ export async function generateMetadata({
   const article = getBlogArticleBySlug(slug);
 
   if (!article) {
-    return {
-      title: "Article introuvable | Klavem Fleet",
-    };
+    return { title: "Article introuvable" };
   }
 
+  const path = `/blog/${slug}`;
   return {
-    title: `${article.title} | Klavem Fleet`,
+    title: article.title,
     description: article.excerpt,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "article",
+      url: path,
+      title: article.title,
+      description: article.excerpt,
+      images: [article.image],
+      publishedTime: article.publishedAt,
+      authors: [article.author.name],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt,
+      images: [article.image],
+    },
   };
 }
 
@@ -50,8 +65,40 @@ export default async function BlogArticlePage({ params }: PageProps) {
 
   const relatedArticles = getRelatedBlogArticles(article, 2);
 
+  const SITE_URL = "https://klavem.fr";
+  const articleUrl = `${SITE_URL}/blog/${slug}`;
+  const blogPostingJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
+    headline: article.title,
+    description: article.excerpt,
+    image: `${SITE_URL}${article.image}`,
+    datePublished: article.publishedAt,
+    author: { "@type": "Person", name: article.author.name },
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    articleSection: article.category,
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+      { "@type": "ListItem", position: 3, name: article.title, item: articleUrl },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Header variant="light" />
       <main className="bg-background text-foreground">
         <article>

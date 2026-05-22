@@ -14,9 +14,25 @@ import { Footer } from "@/components/blocks/footer";
 import { Header } from "@/components/blocks/header";
 
 export const metadata: Metadata = {
-  title: "Location véhicule VTC en Île-de-France | Klavem Fleet",
+  title: {
+    absolute: "Location véhicule VTC en Île-de-France | Klavem Fleet",
+  },
   description:
     "Louez votre véhicule VTC en Île-de-France. 7 000 km/mois, assurance et entretien inclus, véhicule disponible en 48h. Hybrides et électriques dès 29€/jour.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    title: "Location véhicule VTC en Île-de-France | Klavem Fleet",
+    description:
+      "Louez votre véhicule VTC en Île-de-France. 7 000 km/mois, assurance et entretien inclus, véhicule disponible en 48h. Hybrides et électriques dès 29€/jour.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Location véhicule VTC en Île-de-France | Klavem Fleet",
+    description:
+      "Louez votre véhicule VTC en Île-de-France. 7 000 km/mois, assurance et entretien inclus, véhicule disponible en 48h. Hybrides et électriques dès 29€/jour.",
+  },
 };
 
 export default function Home() {

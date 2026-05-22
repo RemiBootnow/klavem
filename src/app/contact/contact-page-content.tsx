@@ -62,22 +62,14 @@ function ContactPageContent({
     setCurrentSlug(slug || null);
   }
 
-  if (!selectedVehicle) {
-    return (
-      <FormCard>
-        <ContactForm
-          vehicles={formVehicles}
-          initialVehicleSlug={initialVehicleSlug}
-          onVehicleChange={handleVehicleChange}
-        />
-        <FormFooter />
-      </FormCard>
-    );
-  }
-
   return (
-    <div className="lg:grid lg:grid-cols-[1fr_520px] lg:items-start lg:gap-24">
-      <VehicleShowcase vehicle={selectedVehicle} />
+    <div
+      className={cn(
+        selectedVehicle &&
+          "lg:grid lg:grid-cols-[1fr_520px] lg:items-start lg:gap-24"
+      )}
+    >
+      {selectedVehicle && <VehicleShowcase vehicle={selectedVehicle} />}
       <FormCard>
         <ContactForm
           vehicles={formVehicles}

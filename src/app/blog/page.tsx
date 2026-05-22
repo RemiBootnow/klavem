@@ -7,9 +7,17 @@ import { CtaSection } from "@/components/sections/cta-section";
 import { BlogGallery } from "./blog-gallery";
 
 export const metadata: Metadata = {
-  title: "Blog VTC | Klavem Fleet",
+  title: "Blog VTC",
   description:
-    "Conseils, guides et comparatifs pour choisir, louer et optimiser votre vehicule VTC en Ile-de-France.",
+    "Conseils, guides et comparatifs pour choisir, louer et optimiser votre véhicule VTC en Île-de-France.",
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    type: "website",
+    url: "/blog",
+    title: "Blog VTC | Klavem Fleet",
+    description:
+      "Conseils, guides et comparatifs pour choisir, louer et optimiser votre véhicule VTC en Île-de-France.",
+  },
 };
 
 export default async function BlogPage({
