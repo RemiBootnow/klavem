@@ -68,6 +68,16 @@ export const CATEGORIES: number[] = [
 export const SHOWCASE_COLORS = ["black", "white", "grey"] as const;
 export type ShowcaseColor = (typeof SHOWCASE_COLORS)[number];
 
+const VAN_SLUG = "mercedes-classe-v-250-xl";
+
+export function getVehicleListShowcaseColor(
+  vehicle: Vehicle,
+  index: number
+): ShowcaseColor {
+  if (vehicle.slug === VAN_SLUG) return "black";
+  return SHOWCASE_COLORS[index % SHOWCASE_COLORS.length];
+}
+
 export function parseShowcaseColor(
   value: string | string[] | undefined
 ): ShowcaseColor {

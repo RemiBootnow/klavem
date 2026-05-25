@@ -5,9 +5,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { VehicleCard } from "@/components/blocks/vehicle-card";
 import { buttonVariants } from "@/components/components/ui/button-variants";
 import {
-  SHOWCASE_COLORS,
   applyColorVariant,
   getBodyCategory,
+  getVehicleListShowcaseColor,
   vehicles,
 } from "@/lib/vehicles";
 
@@ -58,7 +58,7 @@ function VehiclesGallery() {
       {filtered.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((v, i) => {
-            const color = SHOWCASE_COLORS[i % SHOWCASE_COLORS.length];
+            const color = getVehicleListShowcaseColor(v, i);
             return (
               <VehicleCard
                 key={v.slug}
