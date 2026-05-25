@@ -21,14 +21,14 @@ function HeroSection() {
         />
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <Image
-            src="/home/hero/two-cars-hero-mobile-v4.jpg"
+            src="/home/hero/two-cars-hero-mobile-v6.jpg"
             alt=""
             fill
             priority
             className="object-cover object-center lg:hidden"
           />
           <Image
-            src="/home/hero/two-cars-hero-v5.jpg"
+            src="/home/hero/two-cars-hero-v6.jpg"
             alt=""
             fill
             priority
