@@ -47,7 +47,7 @@ function TestimonialCard({
           </p>
           <footer className="text-sm">
             <span className="font-medium text-white">{testimonial.name}</span>
-            <span className="text-white/60"> — {testimonial.role}</span>
+            <span className="text-white/60">, {testimonial.role}</span>
           </footer>
         </blockquote>
       ))}

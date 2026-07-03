@@ -93,7 +93,7 @@ function FormCard({ children }: { children: React.ReactNode }) {
 function FormFooter() {
   return (
     <p className="mt-6 text-center text-xs text-muted-foreground">
-      Réponse en moins de 2h ouvrées · contact@klavem.fr · 01 89 62 31 22
+      Réponse en moins de 2h ouvrées · contact@klavemfleet.fr · 01 89 62 31 22
     </p>
   );
 }

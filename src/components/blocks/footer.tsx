@@ -10,11 +10,9 @@ const vehicleLinks = VEHICLE_BRANDS.map((brand) => ({
 
 const resourceLinks = [
   { label: "Blog", href: "/blog/" },
-  { label: "FAQ", href: "/faq/" },
   { label: "Contact", href: "/contact/" },
-  { label: "Mentions légales", href: "/mentions-legales/" },
-  { label: "CGV", href: "/cgv/" },
-  { label: "Confidentialité", href: "/confidentialite/" },
+  { label: "Mentions légales", href: "/mentions" },
+  { label: "Confidentialité", href: "/confidentialite" },
 ];
 
 function FooterColumn({

@@ -666,7 +666,7 @@ function VehicleSelectionStep({
             >
               <FallbackImage
                 src={vehicle.image}
-                alt={`${vehicle.name} — location VTC Klavem`}
+                alt={`${vehicle.name}, location VTC Klavem`}
                 className="absolute inset-0 h-full w-full object-contain p-1.5"
               />
               {selected && (

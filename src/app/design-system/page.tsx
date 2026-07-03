@@ -181,7 +181,7 @@ export default function DesignSystemPage() {
 
       {/* ——— Blocks ——— */}
       <Section title="Blocks">
-        <Subsection title="ContentBlock — Left aligned (default)">
+        <Subsection title="ContentBlock : Left aligned (default)">
           <ContentBlock
             headliner="Introducing"
             headline="Build faster with Klavem"
@@ -193,7 +193,7 @@ export default function DesignSystemPage() {
           />
         </Subsection>
 
-        <Subsection title="ContentBlock — Centered">
+        <Subsection title="ContentBlock : Centered">
           <ContentBlock
             centered
             headliner="Why Klavem"
@@ -203,7 +203,7 @@ export default function DesignSystemPage() {
           />
         </Subsection>
 
-        <Subsection title="ContentBlock — Minimal (no headliner, no actions)">
+        <Subsection title="ContentBlock : Minimal (no headliner, no actions)">
           <ContentBlock
             headline="Simple and clean"
             headlineLevel={3}

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { vehicles } from "@/lib/vehicles";
 import { blogArticles } from "@/lib/blog";
 
-const SITE_URL = "https://klavem.fr";
+const SITE_URL = "https://klavemfleet.fr";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
