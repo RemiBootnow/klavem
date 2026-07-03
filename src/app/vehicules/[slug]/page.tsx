@@ -16,6 +16,7 @@ import { Header } from "@/components/blocks/header";
 import { Footer } from "@/components/blocks/footer";
 import { CtaSection } from "@/components/sections/cta-section";
 import { FaqSection } from "@/components/sections/faq-section";
+import { getVehicleFaqItems } from "@/lib/vehicle-faq";
 import { buttonVariants } from "@/components/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 import {
@@ -56,19 +57,19 @@ export async function generateMetadata({
   const description = `Louez le ${name} (${vehicle.bodyType}, ${vehicle.motorisation.toLowerCase()}) en Île-de-France${weekly !== null ? ` dès ${weekly}€/semaine` : ""}. Entretien et assurance VTC inclus.`;
   const path = `/vehicules/${slug}`;
   return {
-    title: `${name} — Location VTC`,
+    title: `${name} : location VTC`,
     description,
     alternates: { canonical: path },
     openGraph: {
       type: "website",
       url: path,
-      title: `${name} — Location VTC | Klavem Fleet`,
+      title: `${name} : location VTC | Klavem Fleet`,
       description,
       images: [vehicle.image],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${name} — Location VTC | Klavem Fleet`,
+      title: `${name} : location VTC | Klavem Fleet`,
       description,
       images: [vehicle.image],
     },
@@ -136,10 +137,11 @@ export default async function VehiclePage({
   const years = formatYears(vehicle);
   const subtitle = getSubtitle(vehicle);
   const related = getRelatedVehicles(vehicle, 3);
+  const faqItems = getVehicleFaqItems(vehicle);
 
   const weekly =
     vehicle.tarifJournalier !== null ? vehicle.tarifJournalier * 7 : null;
-  const SITE_URL = "https://klavem.fr";
+  const SITE_URL = "https://klavemfleet.fr";
   const vehiclePath = `/vehicules/${vehicle.slug}`;
   const vehicleJsonLd = {
     "@context": "https://schema.org",
@@ -190,11 +192,11 @@ export default async function VehiclePage({
     isElectric
       ? {
           label: "Temps de charge",
-          value: vehicle.tempsCharge ?? "—",
+          value: vehicle.tempsCharge ?? "N/C",
         }
       : {
           label: "Consommation",
-          value: vehicle.consommation ?? "—",
+          value: vehicle.consommation ?? "N/C",
         },
     ...(vehicle.autonomie != null
       ? [{ label: "Autonomie", value: `${vehicle.autonomie} km` }]
@@ -313,7 +315,10 @@ export default async function VehiclePage({
           </section>
         )}
 
-        <FaqSection />
+        <FaqSection
+          items={faqItems}
+          headline={`Questions fréquentes sur la ${name}`}
+        />
 
         <CtaSection />
       </main>

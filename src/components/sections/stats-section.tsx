@@ -10,7 +10,7 @@ function StatsSection() {
             { value: "+350", label: "véhicules disponibles" },
             { value: "7 000 km", label: "inclus chaque mois" },
             { value: "48h", label: "pour démarrer" },
-            { value: "15 jours", label: "de préavis — sans engagement long terme" },
+            { value: "15 jours", label: "de préavis, sans engagement long terme" },
           ]}
         />
       </Container>

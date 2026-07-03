@@ -75,7 +75,7 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
               ? "rounded-t-2xl rounded-b-[4px]"
               : "rounded-2xl",
           )}
-          aria-label={`${alt} — photo 1`}
+          aria-label={`${alt}, photo 1`}
         >
           <Image
             src={images[0]}
@@ -92,7 +92,7 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
             type="button"
             onClick={() => openAt(1)}
             className="relative aspect-4/3 cursor-pointer overflow-hidden transition-transform active:scale-[0.98] rounded-2xl bg-muted"
-            aria-label={`${alt} — photo 2`}
+            aria-label={`${alt}, photo 2`}
           >
             <Image
               src={images[1]}
@@ -110,7 +110,7 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
               type="button"
               onClick={() => openAt(1)}
               className="relative aspect-4/3 cursor-pointer overflow-hidden transition-transform active:scale-[0.98] rounded-t-[4px] rounded-bl-2xl rounded-br-[4px] bg-muted"
-              aria-label={`${alt} — photo 2`}
+              aria-label={`${alt}, photo 2`}
             >
               <Image
                 src={images[1]}
@@ -124,7 +124,7 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
               type="button"
               onClick={() => openAt(2)}
               className="relative aspect-4/3 cursor-pointer overflow-hidden transition-transform active:scale-[0.98] rounded-t-[4px] rounded-bl-[4px] rounded-br-2xl bg-muted"
-              aria-label={`${alt} — photo 3`}
+              aria-label={`${alt}, photo 3`}
             >
               <Image
                 src={images[2]}
@@ -142,7 +142,7 @@ function VehicleGallery({ images, alt }: VehicleGalleryProps) {
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={`${alt} — galerie photos`}
+          aria-label={`${alt}, galerie photos`}
           onClick={close}
           className="fixed inset-0 z-100 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
         >

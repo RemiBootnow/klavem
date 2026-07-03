@@ -65,7 +65,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
 
   const relatedArticles = getRelatedBlogArticles(article, 2);
 
-  const SITE_URL = "https://klavem.fr";
+  const SITE_URL = "https://klavemfleet.fr";
   const articleUrl = `${SITE_URL}/blog/${slug}`;
   const blogPostingJsonLd = {
     "@context": "https://schema.org",

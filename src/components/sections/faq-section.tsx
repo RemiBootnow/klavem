@@ -2,7 +2,9 @@ import { Container } from "@/components/components/container";
 import { ContentBlock } from "@/components/blocks/content-block";
 import { FaqList } from "@/components/blocks/faq-list";
 
-const faqItems = [
+type FaqItem = { question: string; answer: string };
+
+const defaultFaqItems: FaqItem[] = [
   {
     question: "Faut-il une carte VTC pour louer un véhicule chez Klavem ?",
     answer:
@@ -26,11 +28,11 @@ const faqItems = [
   },
 ];
 
-function FaqJsonLd() {
+function FaqJsonLd({ items }: { items: FaqItem[] }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faqItems.map((item) => ({
+    mainEntity: items.map((item) => ({
       "@type": "Question",
       name: item.question,
       acceptedAnswer: {
@@ -48,14 +50,20 @@ function FaqJsonLd() {
   );
 }
 
-function FaqSection() {
+function FaqSection({
+  items = defaultFaqItems,
+  headline = "Questions fréquentes",
+}: {
+  items?: FaqItem[];
+  headline?: string;
+} = {}) {
   return (
     <section data-slot="faq-section" className="section-y">
-      <FaqJsonLd />
+      <FaqJsonLd items={items} />
       <Container size="md">
         <div className="flex flex-col items-center gap-8 lg:gap-12">
-          <ContentBlock headline="Questions fréquentes" />
-          <FaqList items={faqItems} className="w-full max-w-180" />
+          <ContentBlock headline={headline} />
+          <FaqList items={items} className="w-full max-w-180" />
         </div>
       </Container>
     </section>

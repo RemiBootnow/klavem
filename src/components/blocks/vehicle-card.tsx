@@ -107,7 +107,7 @@ function VehicleCard({
       <div className="relative aspect-[3/2] w-full">
         <Image
           src={images[idx]}
-          alt={`${name} — location VTC Île-de-France — Klavem Fleet`}
+          alt={`${name}, location VTC Île-de-France, Klavem Fleet`}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           className="object-contain"

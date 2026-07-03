@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const SITE_URL = "https://klavem.fr";
+const SITE_URL = "https://klavemfleet.fr";
 const SITE_NAME = "Klavem Fleet";
 const DEFAULT_DESCRIPTION =
   "Location de véhicules VTC en Île-de-France. Hybrides et électriques, assurance et entretien inclus, 7 000 km/mois, véhicule disponible en 48h.";
@@ -59,7 +59,7 @@ const organizationJsonLd = {
   "@id": `${SITE_URL}/#organization`,
   name: SITE_NAME,
   url: SITE_URL,
-  email: "contact@klavem.fr",
+  email: "contact@klavemfleet.fr",
   telephone: "+33189623122",
   areaServed: {
     "@type": "AdministrativeArea",
