@@ -42,3 +42,6 @@ next-env.d.ts
 
 # claude code local settings
 .claude/settings.local.json
+
+# raw Gemini vehicle renders (dev cache, not used at runtime, kept local only)
+public/vehicules/*/raw/
